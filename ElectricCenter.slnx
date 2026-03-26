@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="electriccenter.client/electriccenter.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="ElectricCenter.Server/ElectricCenter.Server.csproj" />
+</Solution>

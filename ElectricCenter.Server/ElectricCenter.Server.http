@@ -1,0 +1,6 @@
+@ElectricCenter.Server_HostAddress = http://localhost:5172
+
+GET {{ElectricCenter.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
