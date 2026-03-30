@@ -1,5 +1,10 @@
+using ElectricCenter.Server.Services.Email.Interface;
+using ElectricCenter.Server.Services.Email.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
+//Add Email configuration
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -15,6 +20,8 @@ app.MapStaticAssets();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    //app.UseSwagger();
+    //app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -26,3 +33,4 @@ app.MapControllers();
 app.MapFallbackToFile("/index.html");
 
 app.Run();
+ 
