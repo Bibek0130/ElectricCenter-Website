@@ -1,3 +1,5 @@
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 function landingPage() {
 
     return (
@@ -17,14 +19,18 @@ function landingPage() {
                 <div className="row align-items-center">
                     
                         <div className="col p-2 text-lg-end text-md-end">
-                            <div>
-                            <button className="btn btn-lg btn-danger " >Services</button>
+                        <div>
+                            <a href="/services">
+                                <button className="btn btn-lg btn-danger">Services</button>
+                            </a>
                             </div>
 
                         </div>
                         <div className="col p-2 text-lg-start text-md-start">
-                            <div>
+                        <div>
+                            <a href="/home">
                                 <button className="btn btn-lg btn-dark">Product</button>
+                            </a>
                             </div>
 
                         </div>
