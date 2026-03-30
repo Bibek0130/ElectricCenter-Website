@@ -4,37 +4,61 @@
 //
 // Preserves any existing comment blocks as required.
 
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
-function CustomNav() {
+const CustomNav = ({ li }) => {
     return (
         <>
-        <Navbar className="bg-body-tertiary">
-        <Container>
-          <Navbar.Brand href="#home">
-          <img width="50" height="50" src="https://img.icons8.com/quill/50/FA5252/light-on.png" alt="light-on"/>
-           <b>Panchamukhi Electric Center </b>
-          </Navbar.Brand>
+            <Navbar expand="lg" className="bg-body-tertiary">
+                <Container>
+                    <Navbar.Brand as={NavLink} to="/home">
+                        <img
+                            width="30"
+                            height="30"
+                            src="https://img.icons8.com/quill/50/FA5252/light-on.png"
+                            alt="light-on"
+                            className="d-inline-block align-top me-2"
+                        />
+                        <b>Panchamukhi Electric Center</b>
+                    </Navbar.Brand>
 
-          <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto " >
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#services">Services</Nav.Link>
-            <Nav.Link href="#FAQ">Common Electrical Problem</Nav.Link>
-          </Nav>
-          <span>
-            <img width="30" height="30" src="https://img.icons8.com/sf-black-filled/64/FA5252/phone-disconnected.png" alt="phone-disconnected"/> +977 9841445050      
-          </span>
-        </Navbar.Collapse>
-        </Container>
-      </Navbar>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            {li.map((item, i) => {
+                                // Create path based on the second element in your array (e.g., "home", "about")
+                                const path = `/${item[1]}`;
+                                return (
+                                    <Nav.Link
+                                        key={i}
+                                        as={NavLink}
+                                        to={path}
+                                    >
+                                        {item[0]}
+                                    </Nav.Link>
+                                );
+                            })}
+                        </Nav>
+
+                        <span className="navbar-text">
+                            <img width="20" height="20" src="https://img.icons8.com/sf-black-filled/64/FA5252/phone-disconnected.png" alt="phone-disconnected" />
+                            <span className="ms-2">+977 9841445050</span>
+                        </span>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+
+            {/* This is where routed pages (Home, About, etc.) will render */}
+            <Container className="mt-4">
+                <Outlet />
+            </Container>
         </>
-    )
-}
-export default CustomNav;
+    );
+};
 
+export default CustomNav;
