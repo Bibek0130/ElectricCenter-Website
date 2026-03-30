@@ -61,11 +61,11 @@ body {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    background-image: url(.././public/background.jpg);
+    /*background-image: url(.././public/background.jpg);
     background-repeat: no-repeat;
-    background-attachment: fixed; /* Keeps image from scrolling */
-    background-position: center; /* Centers the image */
-    background-size: cover; /* Scales image to fill the screen */
+    background-attachment: fixed;*/ /* Keeps image from scrolling */
+    /*background-position: center;*/ /* Centers the image */
+    /*background-size: cover;*/ /* Scales image to fill the screen */
 }
 
 h1,
