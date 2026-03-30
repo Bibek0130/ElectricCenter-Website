@@ -36,7 +36,7 @@ const CustomNav = ({ li }) => {
                                 return (
                                     <Nav.Link
                                         key={i}
-                                        as={NavLink}
+                                        as={NavLink} //sends as link
                                         to={path}
                                     >
                                         {item[0]}
