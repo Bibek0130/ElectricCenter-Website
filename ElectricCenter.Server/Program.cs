@@ -1,5 +1,6 @@
 using ElectricCenter.Server.Services.Email.Interface;
 using ElectricCenter.Server.Services.Email.Service;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +21,8 @@ app.MapStaticAssets();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
+    app.MapScalarApiReference("/api-docs");
 }
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
