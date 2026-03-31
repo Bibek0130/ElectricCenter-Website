@@ -8,8 +8,8 @@ namespace ElectricCenter.Server.Services.Email.Service
     {
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            var mail = "aQ9zXp7r@mail.com";
-            var pw = "!9$dY2*gH7kL";
+            var mail = "mainalibibek2nd@gmail.com";
+            var pw = "Password_chaidainah01";
 
             var client = new SmtpClient("smtp.mail.com", 587)
             {
