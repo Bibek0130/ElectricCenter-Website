@@ -2,6 +2,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import CustomNav from './layout/MainLayout.jsx';
 import LandingPage from '../features/landing page/LandingPage.jsx';
+import ProductsPage from '../features/Product/pages/ProductsPage.jsx';
 
 function App() {
     return(
@@ -10,12 +11,13 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route element={<CustomNav li={[
                     ["Home", "home"],
+                    ["Products", "products"],
                     ["About Us", "about"],
                     ["Services", "services"],
                     ["Common Electrical Problem", "FAQ"]
                 ]} />}>
                    
-
+                    <Route path="/products" element={<ProductsPage />}/>
                     <Route path="/home" element={<h1>Home Page</h1>} />
                     <Route path="/about" element={<h1>About Us</h1>} />
                     <Route path="/services" element={<h1>Our Services</h1>} />
