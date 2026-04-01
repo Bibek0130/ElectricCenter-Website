@@ -28,7 +28,7 @@ function landingPage() {
                         </div>
                         <div className="col p-2 text-lg-start text-md-start">
                         <div>
-                            <a href="/home">
+                            <a href="/products">
                                 <button className="btn btn-lg btn-dark">Product</button>
                             </a>
                             </div>
