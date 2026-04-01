@@ -38,8 +38,8 @@ function ProductCard({ product, index }) {
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
-                background: hovered ? "#1e1e35" : "#16162a",
-                border: hovered ? "1px solid #5c5cff" : "1px solid #2a2a44",
+                background: hovered ? "#FFF5F7" : "#FFFFFF",
+                border: hovered ? "1px solid #FFF5F7" : "1px solid #2a2a44",
                 borderRadius: "16px",
                 overflow: "hidden",
                 transition: "all 0.25s ease",
@@ -60,7 +60,7 @@ function ProductCard({ product, index }) {
                 />
                 <span style={{
                     position: "absolute", top: "12px", left: "12px",
-                    background: "rgba(92,92,255,0.85)", color: "#fff",
+                    background: "#FFB2B2", color: "black",
                     fontSize: "11px", fontWeight: 600, letterSpacing: "0.5px",
                     padding: "3px 10px", borderRadius: "20px", backdropFilter: "blur(6px)",
                 }}>
@@ -78,8 +78,9 @@ function ProductCard({ product, index }) {
 
             {/* Body */}
             <div style={{ padding: "16px" }}>
-                <h3 style={{ margin: "0 0 8px", fontSize: "15px", fontWeight: 600, color: "#e8e8ff", lineHeight: 1.4, fontFamily: "'DM Sans', sans-serif" }}>
+                <h3 style={{ margin: "0 0 8px", fontSize: "15px", fontWeight: 600, color: "cornflowerblue", lineHeight: 1.4, fontFamily: "'DM Sans', sans-serif" }}>
                     {product.name}
+
                 </h3>
 
                 <StarRating rating={product.rating} />
@@ -170,10 +171,10 @@ export default function ProductsPage() {
         select option { background: #1a1a2e; }
       `}</style>
 
-            <div style={{ minHeight: "100vh", background: "#0e0e1c", fontFamily: "'DM Sans', sans-serif", padding: "40px 24px" }}>
+            <div style={{ minHeight: "100vh", background:"#FFEABB", fontFamily: "'DM Sans', sans-serif", padding: "40px 24px" }}>
                 {/* Header */}
                 <div style={{ maxWidth: "1200px", margin: "0 auto 36px" }}>
-                    <h1 style={{ margin: 0, fontSize: "36px", fontFamily: "'Sora', sans-serif", fontWeight: 800, color: "#e8e8ff", letterSpacing: "-0.5px" }}>
+                    <h1 style={{ margin: 0, fontSize: "36px", fontFamily: "'Sora', sans-serif", fontWeight: 800, color: "#FF5A5A", letterSpacing: "-0.5px" }}>
                         Our Products
                     </h1>
                     <p style={{ margin: "8px 0 0", color: "#666", fontSize: "15px" }}>
@@ -190,16 +191,16 @@ export default function ProductsPage() {
                         onChange={e => setSearch(e.target.value)}
                         style={{
                             flex: "1", minWidth: "200px", padding: "10px 16px",
-                            background: "#16162a", border: "1px solid #2a2a44", borderRadius: "10px",
-                            color: "#e8e8ff", fontSize: "14px", outline: "none",
+                            background: "#FFB2B2", border: "1px solid #2a2a44", borderRadius: "10px",
+                            color: "#4B2E2B", fontSize: "14px", outline: "none",
                         }}
                     />
                     <select
                         value={sortBy}
                         onChange={e => setSortBy(e.target.value)}
                         style={{
-                            padding: "10px 16px", background: "#16162a", border: "1px solid #2a2a44",
-                            borderRadius: "10px", color: "#e8e8ff", fontSize: "14px", outline: "none", cursor: "pointer",
+                            padding: "10px 16px", background: "#FFB2B2", border: "1px solid #2a2a44",
+                            borderRadius: "10px", color: "#4B2E2B", fontSize: "14px", outline: "none", cursor: "pointer",
                         }}
                     >
                         <option value="default">Sort: Default</option>
@@ -217,8 +218,8 @@ export default function ProductsPage() {
                             onClick={() => setActiveCategory(cat)}
                             style={{
                                 padding: "7px 18px", borderRadius: "20px", border: "1px solid",
-                                borderColor: activeCategory === cat ? "#5c5cff" : "#2a2a44",
-                                background: activeCategory === cat ? "#5c5cff" : "transparent",
+                                borderColor: activeCategory === cat ? "#FDACAC" : "#2a2a44",
+                                background: activeCategory === cat ? "#FDACAC" : "transparent",
                                 color: activeCategory === cat ? "#fff" : "#888",
                                 fontSize: "13px", fontWeight: 500, cursor: "pointer",
                                 transition: "all 0.2s ease",
