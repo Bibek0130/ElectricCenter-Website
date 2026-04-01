@@ -3,12 +3,12 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import CustomNav from './layout/MainLayout.jsx';
 import LandingPage from '../features/landing page/LandingPage.jsx';
 import ProductsPage from '../features/Product/pages/ProductsPage.jsx';
+import ServicePage from '../features/service/pages/service.jsx';
 
 function App() {
     return(
         <>
             <Routes>
-                <Route path="/" element={<LandingPage />} />
                 <Route element={<CustomNav li={[
                     ["Home", "home"],
                     ["Products", "products"],
@@ -18,9 +18,9 @@ function App() {
                 ]} />}>
                    
                     <Route path="/products" element={<ProductsPage />}/>
-                    <Route path="/home" element={<h1>Home Page</h1>} />
+                    <Route index path="/home" element={<LandingPage />} />
                     <Route path="/about" element={<h1>About Us</h1>} />
-                    <Route path="/services" element={<h1>Our Services</h1>} />
+                    <Route path="/services" element={<ServicePage />} />
                     <Route path="/faq" element={<h1>Electrical FAQ</h1>} />
                 </Route>
            </Routes>
