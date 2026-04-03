@@ -1,5 +1,6 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+//for docs on map functionality on react : https://visgl.github.io/react-google-maps/docs/get-started
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 function landingPage() {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
