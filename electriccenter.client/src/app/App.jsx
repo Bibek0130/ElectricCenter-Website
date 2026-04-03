@@ -4,6 +4,7 @@ import CustomNav from './layout/MainLayout.jsx';
 import LandingPage from '../features/landing page/LandingPage.jsx';
 import ProductsPage from '../features/Product/pages/ProductsPage.jsx';
 import ServicePage from '../features/service/pages/service.jsx';
+import FAQPage from '../features/FAQ/FAQ page.jsx';
 
 function App() {
     return(
@@ -21,7 +22,7 @@ function App() {
                     <Route index path="/home" element={<LandingPage />} />
                     <Route path="/about" element={<h1>About Us</h1>} />
                     <Route path="/services" element={<ServicePage />} />
-                    <Route path="/faq" element={<h1>Electrical FAQ</h1>} />
+                    <Route path="/faq" element={<FAQPage />} />
                 </Route>
            </Routes>
         </>
