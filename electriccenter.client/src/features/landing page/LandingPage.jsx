@@ -1,7 +1,8 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { APIProvider, Map } from '@vis.gl/react-google-maps';
 function landingPage() {
-
+    const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     return (
         <>
            
@@ -35,6 +36,19 @@ function landingPage() {
 
                         </div>
                     
+                </div>
+
+                {/*Map section*/}
+                <div className="row">
+                    <APIProvider apiKey={API_KEY}>
+                        <Map
+                            style={{ width: '100vw', height: '100vh' }}
+                            defaultCenter={{ lat: 22.54992, lng: 0 }}
+                            defaultZoom={3}
+                            gestureHandling='greedy'
+                            disableDefaultUI
+                        />
+                    </APIProvider>
                 </div>
                
             </div>
