@@ -1,9 +1,11 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 //for docs on map functionality on react : https://visgl.github.io/react-google-maps/docs/get-started
-import { APIProvider, Map } from '@vis.gl/react-google-maps';
+import {APIProvider, Map, AdvancedMarker,Pin } from '@vis.gl/react-google-maps';
+import PoiMarkers from '../../components/Maps/PoiMarkers.jsx';
 function landingPage() {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+    const locations = [{ key: 'Panchamukhi Electric Store', location : { lat: 27.714095182563064, lng: 85.35454232486178 } }];
     return (
         <>
            
@@ -44,11 +46,15 @@ function landingPage() {
                     <APIProvider apiKey={API_KEY}>
                         <Map
                             style={{ width: '100vw', height: '100vh' }}
-                            defaultCenter={{ lat: 22.54992, lng: 0 }}
-                            defaultZoom={3}
+                           // defaultCenter={{ lat: 22.54992, lng: 0 }}
+                            defaultZoom={20}
+                            defaultCenter={{lat: 27.71409596508506, lng: 85.35457786413149} }
                             gestureHandling='greedy'
                             disableDefaultUI
-                        />
+                            mapId={'DEMO_MAP_ID'}
+                        >
+                            <PoiMarkers pois={locations} />
+                       </Map>
                     </APIProvider>
                 </div>
                
