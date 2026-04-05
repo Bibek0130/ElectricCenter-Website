@@ -3,6 +3,7 @@ import Navbar from 'react-bootstrap/Navbar';
 //for docs on map functionality on react : https://visgl.github.io/react-google-maps/docs/get-started
 import {APIProvider, Map, AdvancedMarker,Pin } from '@vis.gl/react-google-maps';
 import PoiMarkers from '../../components/Maps/PoiMarkers.jsx';
+import Slideshow from '../../components/Common/Slideshow.jsx';
 function landingPage() {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     const locations = [{ key: 'Panchamukhi Electric Store', location : { lat: 27.714095182563064, lng: 85.35454232486178 } }];
@@ -10,14 +11,17 @@ function landingPage() {
         <>
            
             <div className="container" style={centerContainer}>
-                <div className="row">
+               {/* <div className="row">
                     <h1>OVER 20 YEARS EXPERIENCE</h1>
                 </div>
-
+                
                 <div className="row">
                     <p>
                         Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate
                     </p>
+                </div>*/}
+                <div className="row container-fluid">
+                    <Slideshow />
                 </div>
 
                 <div className="row align-items-center">
@@ -42,10 +46,11 @@ function landingPage() {
                 </div>
 
                 {/*Map section*/}
-                <div className="row">
+                <div className="row align-items-center p-5">
+                <p>Map</p>
                     <APIProvider apiKey={API_KEY}>
                         <Map
-                            style={{ width: '100vw', height: '100vh' }}
+                            style={{ width: '100vw', height: '50vh' }}
                            // defaultCenter={{ lat: 22.54992, lng: 0 }}
                             defaultZoom={20}
                             defaultCenter={{lat: 27.71409596508506, lng: 85.35457786413149} }
@@ -66,7 +71,7 @@ function landingPage() {
 export default landingPage;
 
 const centerContainer = {
-    padding: "10% 10% "
+    //padding: "10% 10% "
     //display: "flex",
     //justifyContent: "center"
 }
