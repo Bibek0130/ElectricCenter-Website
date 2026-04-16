@@ -1,3 +1,4 @@
+
 export const COLORS = {
     red: "#DC2626",
     redDark: "#991B1B",
@@ -17,11 +18,8 @@ const style = (obj) => obj;
 
 /* ──────────────── DATA ──────────────── */
 export const shopImages = [
-    { url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80", caption: "Our Main Showroom" },
-    { url: "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1200&q=80", caption: "Electrical Supplies" },
-    { url: "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=1200&q=80", caption: "Professional Tools" },
-    { url: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1200&q=80", caption: "Expert Team" },
-    { url: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200&q=80", caption: "Quality Products" },
+    { url: "./src/assets/MainShowroom.jpg", caption: "Our Main Showroom" },
+    { url: "./src/assets/electricalSupplies.jpg", caption: "Electrical Supplies" },
 ];
 
 const products = [
@@ -36,11 +34,9 @@ const products = [
     { id: 9, name: "Earthing Materials", desc: "Earthing rods, clamps and compounds", price: "From NPR 1,200", icon: "🌍", category: "Protection" },
 ];
 
-const services = [
+export const services = [
     { title: "Electrical Installation", desc: "Complete wiring and installation for homes, offices, and factories. We handle everything from load calculations to final testing.", icon: "🏗️", color: COLORS.red },
     { title: "Maintenance & Repair", desc: "Preventive and corrective maintenance for all electrical systems. Fast response, reliable fixes.", icon: "🛠️", color: COLORS.redDark },
-    { title: "Energy Auditing", desc: "Professional energy audits to reduce consumption and cut electricity bills by up to 30%.", icon: "📊", color: COLORS.red },
-    { title: "Solar System Supply", desc: "Supply of solar panels, inverters, batteries and all associated equipment.", icon: "☀️", color: COLORS.redDark },
     { title: "Consultation & Design", desc: "Expert electrical design and consultation for projects of any scale.", icon: "📐", color: COLORS.red },
     { title: "Bulk Supply & Wholesale", desc: "Special pricing for contractors, builders and bulk buyers. Custom quotes available.", icon: "📦", color: COLORS.redDark },
 ];

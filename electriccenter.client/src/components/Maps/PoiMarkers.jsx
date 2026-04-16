@@ -16,5 +16,5 @@ const PoiMarkers = ({  pois=[]})=>  {
         </>
     );
 };
-
 export default PoiMarkers;
+
