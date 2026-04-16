@@ -15,11 +15,12 @@ export const COLORS = {
 };
 
 const style = (obj) => obj;
-
+ 
 /* ──────────────── DATA ──────────────── */
 export const shopImages = [
     { url: "./src/assets/MainShowroom.jpg", caption: "Our Main Showroom" },
     { url: "./src/assets/electricalSupplies.jpg", caption: "Electrical Supplies" },
+    { url: "./src/assets/panchamukhi.jpeg", caption: "Our Shop" },
 ];
 
 const products = [
