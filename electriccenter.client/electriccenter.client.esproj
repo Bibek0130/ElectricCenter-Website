@@ -12,9 +12,9 @@
     <Folder Include="src\components\FAQ\" />
     <Folder Include="src\components\Common\" />
     <Folder Include="src\components\Footer\" />
+    <Folder Include="src\components\Product\Cart\" />
     <Folder Include="src\features\FAQ\" />
     <Folder Include="src\features\About Us\" />
-    <Folder Include="src\features\Product\pages\" />
     <Folder Include="src\services\" />
   </ItemGroup>
 </Project>
