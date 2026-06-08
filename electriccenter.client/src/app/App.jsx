@@ -6,6 +6,7 @@ import ProductsPage from '../features/Product/pages/ProductsPage.jsx';
 import ServicePage from '../features/service/pages/service.jsx';
 import FAQPage from '../features/FAQ/FAQ page.jsx';
 import AboutPage from '../../src/features/About Us/About Us.jsx';
+import Product from '../features/Product/pages/Product.jsx';
 
 function App() {
     return(
@@ -20,7 +21,7 @@ function App() {
                 ]} />}>
 
                     <Route path="/" element={<Navigate to="/home" />} /> 
-                    <Route path="/products" element={<ProductsPage />}/>
+                    <Route path="/products" element={<Product />}/>
                     <Route  path="/home" element={<LandingPage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/services" element={<ServicePage />} />
