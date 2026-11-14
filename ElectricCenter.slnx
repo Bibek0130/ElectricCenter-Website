@@ -3,5 +3,6 @@
     <Build />
     <Deploy />
   </Project>
+  <Project Path="ElectricCenter.Server.Tests/ElectricCenter.Server.Tests.csproj" />
   <Project Path="ElectricCenter.Server/ElectricCenter.Server.csproj" />
 </Solution>

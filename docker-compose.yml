@@ -1,0 +1,25 @@
+# Local development database. Start with:  docker compose up -d
+# Passwords come from ./.env (git-ignored) — copy .env.example to .env first.
+# Bound to 127.0.0.1 only, on port 3307 so it doesn't clash with a locally installed MySQL.
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: electriccenter-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: electriccenter
+      MYSQL_USER: electriccenter
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  mysql-data:

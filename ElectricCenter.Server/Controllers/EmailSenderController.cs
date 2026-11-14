@@ -1,31 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ElectricCenter.Server.Auth;
 using ElectricCenter.Server.Services.Email.Interface;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ElectricCenter.Server.Controllers
 {
+    /// <summary>SMTP smoke test. Admin-only, and it only ever emails the calling admin.</summary>
     [ApiController]
-    [Route("[controller]")]
-    public class EmailSenderController: ControllerBase
+    [Route("api/email/test")]
+    [Authorize(Policy = Policies.AdminOnly)]
+    public class EmailSenderController(IEmailSender emailSender) : ControllerBase
     {
-        private readonly IEmailSender _emailSender;
-
-        public EmailSenderController(IEmailSender emailSender)
-        {
-            _emailSender = emailSender;
-        }
-
-        //method for testing email sending
         [HttpPost]
         public async Task<IActionResult> SendTestEmail()
         {
-            var receiver = "buzcx58471@minitts.net";
-            var subject = "Test Email";
-            var message = "This is a test email sent from the WeatherForecastController.";
+            var receiver = User.FindFirst(AuthClaims.Email)?.Value;
+            if (string.IsNullOrWhiteSpace(receiver)) return BadRequest(new { message = "Your account has no email address." });
 
-            await _emailSender.SendEmailAsync(receiver, subject, message);
-
-            return Ok("Email send sucessfully");
+            await emailSender.SendEmailAsync(receiver, "Electric Center test email", "This is a test email from the Electric Center server. SMTP is working.");
+            return Ok(new { message = $"Test email sent to {receiver}." });
         }
     }
 }
