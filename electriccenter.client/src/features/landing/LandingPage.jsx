@@ -1,115 +1,100 @@
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import MapSection from '../../components/Maps/MapSection.jsx';
-import { COLORS, shopImages } from '../../data/constants.js';
+import Section from '../../components/layout/Section.jsx';
+import Card from '../../components/ui/Card.jsx';
+import { shopImages, whyChooseUs } from '../../data/content.js';
+
 function LandingPage() {
-
-   
-
     const [current, setCurrent] = useState(0);
     const [animating, setAnimating] = useState(false);
-    const goTo = (i) => { setAnimating(true); setTimeout(() => { setCurrent(i); setAnimating(false); }, 300); };
+
+    const goTo = (i) => {
+        setAnimating(true);
+        setTimeout(() => {
+            setCurrent(i);
+            setAnimating(false);
+        }, 300);
+    };
 
     return (
         <>
-           
-            <div style={centerContainer}>  
-                <section style={{ position: "relative", height: "92vh", minHeight: 520, overflow: "hidden" }}>
-                    {/* Image */}
-                    <div style={{
-                        position: "absolute", inset: 0,
+            <section style={{ position: 'relative', height: '88vh', minHeight: 520, overflow: 'hidden' }}>
+                <div
+                    style={{
+                        position: 'absolute',
+                        inset: 0,
                         backgroundImage: `url(${shopImages[current].url})`,
-                        backgroundSize: "cover", backgroundPosition: "center",
-                        transition: "opacity 0.4s ease",
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        transition: `opacity ${animating ? '0ms' : '400ms'} ease`,
                         opacity: animating ? 0 : 1,
-                    }} />
-                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(153,27,27,0.82) 0%, rgba(0,0,0,0.55) 60%, transparent 100%)" }} />
+                    }}
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(127,29,29,0.85) 0%, rgba(0,0,0,0.55) 60%, transparent 100%)' }} />
 
-                    {/* Content */}
-                    <div style={{ position: "relative", zIndex: 2, height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 7vw", maxWidth: 700 }}>
-                        <div style={{ background: COLORS.red, color: COLORS.white, display: "inline-block", padding: "4px 12px", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: 2, marginBottom: 20, textTransform: "uppercase", fontFamily: "sans-serif" }}>Panchamukhi Electric Center</div>
-                        <h1 style={{ color: COLORS.white, fontSize: "clamp(36px, 6vw, 68px)", fontWeight: 800, lineHeight: 1.1, margin: "0 0 20px", fontFamily: "'Georgia', serif", letterSpacing: "-1px" }}>
-                            Powering Every<br />
-                            <span style={{ color: "#FCA5A5" }}>Connection</span>
-                        </h1>
-                        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 18, margin: "0 0 36px", lineHeight: 1.6, fontFamily: "sans-serif", maxWidth: 440 }}>
-                            Your complete source for electrical equipment, supplies, and expert services in Nepal.
-                        </p>
-                        <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-                            <a href="/products">
-                                <button style={{
-                                    background: COLORS.white, color: COLORS.red, border: "none",
-                                    padding: "14px 28px", borderRadius: 8, fontSize: 15, fontWeight: 700,
-                                    cursor: "pointer", boxShadow: "3px 3px 0 rgba(153,27,27,0.4)", fontFamily: "sans-serif",
-                                    transition: "transform 0.15s",
-                                }}>Shop Products →</button>
-                            </a>
-
-                            <a href="/services">
-                                <button style={{
-                                    background: "transparent", color: COLORS.white,
-                                    border: `2px solid rgba(255,255,255,0.6)`,
-                                    padding: "14px 28px", borderRadius: 8, fontSize: 15, fontWeight: 600,
-                                    cursor: "pointer", fontFamily: "sans-serif", transition: "all 0.2s",
-                                }}>Our Services</button>
-                            </a>
-                           
-                        </div>
+                <div style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 7vw', maxWidth: 700 }}>
+                    <span className="badge badge-primary" style={{ background: 'var(--color-primary)', color: 'var(--color-white)', width: 'fit-content', marginBottom: 'var(--space-5)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                        Panchamukhi Electric Center
+                    </span>
+                    <h1 style={{ color: 'var(--color-white)', fontSize: 'clamp(36px, 6vw, 68px)', marginBottom: 'var(--space-5)' }}>
+                        Powering Every<br />
+                        <span style={{ color: 'var(--color-primary-300)' }}>Connection</span>
+                    </h1>
+                    <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 'var(--text-lg)', marginBottom: 'var(--space-8)', maxWidth: 440, lineHeight: 1.6 }}>
+                        Your complete source for electrical equipment, supplies, licensed electricians, and expert services in Nepal.
+                    </p>
+                    <div style={{ display: 'flex', gap: 'var(--space-4)', flexWrap: 'wrap' }}>
+                        <Link to="/electricians" className="btn btn-primary btn-lg" style={{ background: 'var(--color-white)', color: 'var(--color-primary)' }}>
+                            Book an Electrician →
+                        </Link>
+                        <Link to="/products" className="btn btn-lg" style={{ background: 'transparent', color: 'var(--color-white)', border: '2px solid rgba(255,255,255,0.6)' }}>
+                            Shop Products
+                        </Link>
                     </div>
+                </div>
 
-                    {/* Caption */}
-                    <div style={{ position: "absolute", bottom: 80, right: 40, zIndex: 2, background: "rgba(0,0,0,0.5)", color: COLORS.white, padding: "6px 16px", borderRadius: 20, fontSize: 13, fontFamily: "sans-serif", backdropFilter: "blur(4px)" }}>
-                        {shopImages[current].caption}
-                    </div>
+                <div style={{ position: 'absolute', bottom: 80, right: 40, zIndex: 2, background: 'rgba(0,0,0,0.5)', color: 'var(--color-white)', padding: '6px 16px', borderRadius: 'var(--radius-full)', fontSize: 'var(--text-sm)', backdropFilter: 'blur(4px)' }}>
+                    {shopImages[current].caption}
+                </div>
 
-                    {/* Dots */}
-                    <div style={{ position: "absolute", bottom: 28, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 8, zIndex: 2 }}>
-                        {shopImages.map((_, i) => (
-                            <button key={i} onClick={() => goTo(i)} style={{
-                                width: i === current ? 28 : 8, height: 8,
-                                borderRadius: 4, background: i === current ? COLORS.white : "rgba(255,255,255,0.4)",
-                                border: "none", cursor: "pointer", transition: "all 0.3s", padding: 0,
-                            }} />
-                        ))}
-                    </div>
-                </section>
+                <div style={{ position: 'absolute', bottom: 28, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 8, zIndex: 2 }}>
+                    {shopImages.map((_, i) => (
+                        <button
+                            key={i}
+                            onClick={() => goTo(i)}
+                            aria-label={`Show slide ${i + 1}`}
+                            aria-current={i === current}
+                            style={{
+                                width: i === current ? 28 : 8,
+                                height: 8,
+                                borderRadius: 4,
+                                background: i === current ? 'var(--color-white)' : 'rgba(255,255,255,0.4)',
+                                border: 'none',
+                                cursor: 'pointer',
+                                transition: 'all var(--transition-slow)',
+                                padding: 0,
+                            }}
+                        />
+                    ))}
+                </div>
+            </section>
 
-                {/*Why us section*/}
-                <section style={{ background: COLORS.white, padding: "48px 24px 64px" }}>
-                    <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-                        <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: 3, color: COLORS.red, textTransform: "uppercase", fontFamily: "sans-serif", marginBottom: 8, textAlign: "center" }}>WHY CHOOSE US</p>
-                        <h2 style={{ fontSize: 32, fontWeight: 700, color: COLORS.gray900, fontFamily: "'Georgia', serif", textAlign: "center", marginBottom: 48 }}>The Electric Center Difference</h2>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 24 }}>
-                            {[
-                                { icon: "🏆", title: "20+ Years Experience", desc: "Trusted by thousands of customers since 2005" },
-                                { icon: "📦", title: "500+ Products", desc: "Largest selection of electrical goods in Kathmandu" },
-                                { icon: "🚚", title: "Fast Delivery", desc: "Same-day delivery within Kathmandu valley" },
-                                { icon: "💯", title: "Quality Guarantee", desc: "All products certified and warranty backed" },
-                            ].map(c => (
-                                <div key={c.title} style={{ padding: 24, borderRadius: 12, border: `1px solid ${COLORS.gray200}`, textAlign: "center", transition: "box-shadow 0.2s" }}>
-                                    <div style={{ fontSize: 36, marginBottom: 12 }}>{c.icon}</div>
-                                    <div style={{ fontSize: 16, fontWeight: 700, color: COLORS.gray900, fontFamily: "'Georgia', serif", marginBottom: 8 }}>{c.title}</div>
-                                    <div style={{ fontSize: 14, color: COLORS.gray600, fontFamily: "sans-serif", lineHeight: 1.5 }}>{c.desc}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+            <Section eyebrow="Why choose us" title="The Electric Center Difference">
+                <div className="grid-responsive">
+                    {whyChooseUs.map((c) => (
+                        <Card key={c.title} style={{ textAlign: 'center' }}>
+                            <div style={{ fontSize: 36, marginBottom: 'var(--space-3)' }} aria-hidden="true">{c.icon}</div>
+                            <h3 style={{ marginBottom: 'var(--space-2)' }}>{c.title}</h3>
+                            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>{c.desc}</p>
+                        </Card>
+                    ))}
+                </div>
+            </Section>
 
-                {/* Map Section*/}
-                <MapSection />
-               
-            </div>
-           
+            <MapSection />
         </>
-    )
+    );
 }
+
 export default LandingPage;
-
-const centerContainer = {
-    //padding: "10% 10% "
-    //display: "flex",
-    //justifyContent: "center"
-}
-
