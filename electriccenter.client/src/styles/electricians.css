@@ -1,0 +1,126 @@
+/* Admin: shown when an admin opens a soft-deleted electrician's profile. */
+.electrician-deleted-banner {
+  margin: 0;
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-warning-bg);
+  color: var(--color-warning-600);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+/* Admin electrician form */
+.electrician-form-specialties {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-2) var(--space-4);
+  width: 100%;
+}
+
+.electrician-form-work {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto;
+  gap: var(--space-2);
+  width: 100%;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.electrician-form-work > :nth-child(3),
+.electrician-form-work > :nth-child(4) {
+  grid-column: span 1;
+}
+
+.electrician-form-work > :nth-child(5) {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+@media (max-width: 600px) {
+  .electrician-form-work {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .electrician-form-work > :nth-child(5) {
+    grid-column: 2;
+  }
+}
+
+/* ============ Electrician profile ============ */
+.electrician-profile-hero {
+  background: linear-gradient(135deg, var(--color-primary-700) 0%, var(--color-primary-900) 100%);
+  color: var(--color-white);
+  padding: var(--space-10) var(--space-5);
+}
+
+.electrician-profile-header {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: flex;
+  gap: var(--space-6);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.electrician-profile-layout {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-5) var(--space-16);
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .electrician-profile-layout {
+    grid-template-columns: 1fr;
+    padding-bottom: 110px; /* room for the sticky mobile booking bar */
+  }
+}
+
+.electrician-side-panel {
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-4));
+}
+
+@media (max-width: 900px) {
+  .electrician-side-panel {
+    display: none;
+  }
+}
+
+.electrician-bottom-bar {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .electrician-bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-3) var(--space-5);
+    box-shadow: 0 -8px 24px rgba(17, 24, 39, 0.1);
+    z-index: 90;
+  }
+}
+
+.electrician-specialty-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 var(--space-6);
+}
+
+.electrician-not-found {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--space-16) var(--space-5);
+  text-align: center;
+}
