@@ -1,0 +1,61 @@
+# Render Blueprint: one Docker web service that serves the API and the built React app.
+# Create it with: Render dashboard -> New -> Blueprint -> pick this repo. Render prompts for every
+# variable marked `sync: false` (secrets are never stored in git). Full walkthrough: docs/DEPLOY.md
+services:
+  - type: web
+    name: electriccenter
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    # Closest Render region to Nepal. It can't be changed after creation, so pick the DB's region to match.
+    region: singapore
+    # Free web services block outbound SMTP (ports 25/465/587), so the email OTP codes can't be sent from them.
+    # Paid instances allow 465/587. `0.5c-512mb` is the smallest paid size (Starter, about $7/mo).
+    # See docs/DEPLOY.md before switching this to `free`.
+    plan: 0.5c-512mb
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+        value: "true"
+      # Applies EF migrations on startup (there's no separate release step on Render's free/starter plans).
+      - key: Database__MigrateOnStartup
+        value: "true"
+
+      # ----- Secrets: Render asks for these when the Blueprint is first created -----
+      # Hosted MySQL 8. Example: Server=<host>;Port=<port>;Database=electriccenter;User=<user>;Password=<pw>;SslMode=Required;
+      - key: ConnectionStrings__Default
+        sync: false
+      # Random 256-bit value generated once by Render. Changing it signs every user out.
+      - key: Jwt__SigningKey
+        generateValue: true
+      # First admin account. Only created if that email doesn't exist yet.
+      - key: Seed__Admin__Email
+        sync: false
+      - key: Seed__Admin__Password
+        sync: false
+      - key: Email__Smtp__Host
+        sync: false
+      - key: Email__Smtp__Port
+        value: "587"
+      - key: Email__Smtp__UserName
+        sync: false
+      - key: Email__Smtp__Password
+        sync: false
+      - key: Email__Smtp__FromAddress
+        sync: false
+      - key: Cloudinary__CloudName
+        sync: false
+      - key: Cloudinary__ApiKey
+        sync: false
+      - key: Cloudinary__ApiSecret
+        sync: false
+
+      # ----- Build-time (baked into the public JS bundle, so not secret) -----
+      # Restrict this key to your site's domain(s) in Google Cloud -> Credentials -> HTTP referrers.
+      - key: VITE_GOOGLE_MAPS_API_KEY
+        sync: false

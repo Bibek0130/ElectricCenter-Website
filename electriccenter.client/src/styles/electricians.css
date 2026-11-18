@@ -29,6 +29,7 @@
 .electrician-form-work > :nth-child(3),
 .electrician-form-work > :nth-child(4) {
   grid-column: span 1;
+  min-width: 0;
 }
 
 .electrician-form-work > :nth-child(5) {

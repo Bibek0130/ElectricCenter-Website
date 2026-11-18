@@ -131,8 +131,7 @@ dotnet ef database update --project ElectricCenter.Server
 | `Email__Smtp__Host`, `__Port`, `__UserName`, `__Password`, `__FromAddress` | **Required**: SMTP used to send verification codes. The server won't start without it outside Development |
 | `ASPNETCORE_FORWARDEDHEADERS_ENABLED` | `true` when behind a reverse proxy, so rate limiting sees real client IPs |
 
-The app must be served over HTTPS in production. The refresh cookie is `Secure`.
-
+The app must be served over HTTPS in production. The refresh cookie is `Secure`. Step-by-step Render instructions are in [DEPLOY.md](DEPLOY.md).
 **Free MySQL hosts:** the connection uses `EnableRetryOnFailure`, so a free-tier database waking from sleep doesn't fail the first request. The server version is fixed to 8.0.x. Any MySQL 8-compatible host works by changing only the connection string.
 
 ## Not done yet
@@ -183,3 +182,27 @@ Electricians live in MySQL (`Electricians`, `ElectricianSpecialties`) instead of
 - **WhatsApp booking notifications** now send only `{ electricianId, booking }`. The server looks up the electrician's stored WhatsApp number and refuses deleted or unknown electricians, so the endpoint can't be used to message arbitrary numbers.
 - **Ratings and reviews** were removed from the UI: there is no review system yet, and showing invented ratings would mislead customers.
 - **Sample data:** in Development, `Seed:SampleElectricians` inserts Udhav Mainali once, into an empty table. Production starts empty, so the admin adds electricians.
+
+## Image uploads (Cloudinary)
+
+Product photos, electrician photos and past-work photos are uploaded from the admin forms. The browser sends the file to **our server**, the server uploads it to Cloudinary, and only the returned `https://res.cloudinary.com/…` URL is saved in MySQL (in the existing `ImageUrl` / `PhotoUrl` fields, so no migration).
+
+`POST /api/uploads/image` is **Admin only** and takes `multipart/form-data` with one `file` field. It returns `{ url, width, height }`. Rules:
+- JPG, PNG or WebP, up to **5 MB**. The type is detected from the file's actual bytes, not the file name or the browser's claim. SVG, GIF and anything else is refused.
+- Cloudinary shrinks anything over 1600×1600 px, so phone photos aren't stored at full size.
+- 30 uploads per minute per user.
+- The signed request is made server-side, so the API secret never reaches the browser.
+- Without Cloudinary settings, upload returns **503** "Image uploads aren't set up yet" and the forms show that message. Products and electricians can still be saved without photos.
+
+### Setup
+1. Create a free account at https://cloudinary.com. From the dashboard copy the **Cloud name**, **API key** and **API secret**.
+2. Set them as secrets. In development:
+   ```sh
+   cd ElectricCenter.Server
+   dotnet user-secrets set "Cloudinary:CloudName" "<cloud name>"
+   dotnet user-secrets set "Cloudinary:ApiKey" "<api key>"
+   dotnet user-secrets set "Cloudinary:ApiSecret" "<api secret>"
+   ```
+   In production (Render) set the environment variables `Cloudinary__CloudName`, `Cloudinary__ApiKey` and `Cloudinary__ApiSecret`. Optionally set `Cloudinary__Folder` (default `electriccenter`).
+
+**Known limits:** replacing or removing a photo, or deleting a product, leaves the old file in Cloudinary. It's harmless and counts only against your free storage quota. Clean up from the Cloudinary Media Library if it ever matters. Existing products with pasted image links keep working.

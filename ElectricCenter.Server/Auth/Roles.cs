@@ -25,6 +25,9 @@ namespace ElectricCenter.Server.Auth
 
         /// <summary>Refresh/logout: called on every page load, so allow more.</summary>
         public const string AuthRefresh = "auth-refresh";
+
+        /// <summary>Image uploads: each one costs a Cloudinary call, so cap them per client.</summary>
+        public const string Upload = "upload";
     }
 
     /// <summary>Short JWT claim names (inbound claim mapping is disabled, so these arrive as-is).</summary>
