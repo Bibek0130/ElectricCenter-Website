@@ -2,6 +2,7 @@ using System.Threading.RateLimiting;
 using ElectricCenter.Server.Auth;
 using ElectricCenter.Server.Data;
 using ElectricCenter.Server.Electricians;
+using ElectricCenter.Server.Uploads;
 using ElectricCenter.Server.Products;
 using ElectricCenter.Server.Services.Email.Interface;
 using ElectricCenter.Server.Services.Email.Service;
@@ -61,6 +62,10 @@ builder.Services.AddRateLimiter(options =>
         http.Connection.RemoteIpAddress?.ToString() ?? "unknown",
         _ => new FixedWindowRateLimiterOptions { PermitLimit = authStrictPerMinute, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));
 
+    options.AddPolicy(RateLimitPolicies.Upload, http => RateLimitPartition.GetFixedWindowLimiter(
+        http.User.Identity?.Name ?? http.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 30, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));
+
     options.AddPolicy(RateLimitPolicies.AuthRefresh, http => RateLimitPartition.GetFixedWindowLimiter(
         http.Connection.RemoteIpAddress?.ToString() ?? "unknown",
         _ => new FixedWindowRateLimiterOptions { PermitLimit = authRefreshPerMinute, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));
@@ -78,6 +83,11 @@ else
     builder.Services.AddTransient<IEmailSender, DevelopmentEmailSender>();
 
 builder.Services.AddHttpClient();
+
+// ---------- Image uploads (Cloudinary) ----------
+builder.Services.Configure<CloudinaryOptions>(builder.Configuration.GetSection(CloudinaryOptions.SectionName));
+builder.Services.AddHttpClient(CloudinaryOptions.HttpClientName, c => c.Timeout = TimeSpan.FromSeconds(60));
+builder.Services.AddScoped<IImageUploadService, CloudinaryImageUploadService>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

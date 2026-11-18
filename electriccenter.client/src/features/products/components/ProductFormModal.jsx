@@ -4,6 +4,7 @@ import Button from '../../../components/ui/Button.jsx';
 import FormField from '../../../components/ui/FormField.jsx';
 import Input from '../../../components/ui/Input.jsx';
 import Textarea from '../../../components/ui/Textarea.jsx';
+import ImageUploadField from '../../../components/ui/ImageUploadField.jsx';
 import { useFormValidation } from '../../../hooks/useFormValidation.js';
 import { productsService } from '../../../services/productsService.js';
 import { discountedPrice, formatCurrency } from '../../../utils/format.js';
@@ -115,10 +116,13 @@ function ProductFormModal({ product, categories, onClose, onSaved }) {
                     </div>
 
                     <div className="product-form-span">
-                        {text('imageUrl', 'Image URL', { type: 'url', placeholder: 'https://…/photo.jpg', hint: 'Optional. A direct link to a product photo.' })}
-                        {values.imageUrl && !errors.imageUrl && /^https?:\/\//i.test(values.imageUrl.trim()) && (
-                            <img className="product-form-preview" src={values.imageUrl.trim()} alt="Preview" onError={(e) => { e.currentTarget.hidden = true; }} onLoad={(e) => { e.currentTarget.hidden = false; }} />
-                        )}
+                        <ImageUploadField
+                            label="Product photo"
+                            value={values.imageUrl}
+                            onChange={(url) => setValue('imageUrl', url)}
+                            error={errors.imageUrl}
+                            hint="Optional. JPG, PNG or WebP, up to 5 MB. Without a photo the ⚡ placeholder is shown."
+                        />
                     </div>
 
                     <label className="product-form-span product-form-checkbox">

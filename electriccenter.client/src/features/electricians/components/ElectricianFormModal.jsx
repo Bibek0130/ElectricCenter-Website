@@ -4,6 +4,7 @@ import Button from '../../../components/ui/Button.jsx';
 import FormField from '../../../components/ui/FormField.jsx';
 import Input from '../../../components/ui/Input.jsx';
 import Textarea from '../../../components/ui/Textarea.jsx';
+import ImageUploadField from '../../../components/ui/ImageUploadField.jsx';
 import { useFormValidation } from '../../../hooks/useFormValidation.js';
 import { electriciansService } from '../../../services/electriciansService.js';
 import { AVAILABILITY_OPTIONS, ELECTRICIAN_LIMITS, EMPTY_PAST_WORK, RATE_UNITS, electricianSchema, toFormValues, toRequestBody } from '../electricianForm.js';
@@ -96,7 +97,14 @@ function ElectricianFormModal({ electrician, specialties, specialtiesError, onRe
                     </label>
 
                     <div className="product-form-span">
-                        {text('photo', 'Photo URL', { type: 'url', placeholder: 'https://…/photo.jpg', hint: 'Optional. Initials are shown without a photo.' })}
+                        <ImageUploadField
+                            label="Photo"
+                            shape="round"
+                            value={values.photo}
+                            onChange={(url) => setValue('photo', url)}
+                            error={errors.photo}
+                            hint="Optional. JPG, PNG or WebP, up to 5 MB. Their initials are shown without a photo."
+                        />
                     </div>
 
                     <div className="product-form-span">
@@ -141,7 +149,7 @@ function ElectricianFormModal({ electrician, specialties, specialtiesError, onRe
                         <div key={index} className="electrician-form-work">
                             <Input aria-label={`Past work ${index + 1} title`} placeholder="Title, e.g. Full home rewiring" maxLength={ELECTRICIAN_LIMITS.pastWorkTitle} value={work.title} onChange={(e) => setWork(index, 'title', e.target.value)} />
                             <Input aria-label={`Past work ${index + 1} date`} type="date" max={today} value={work.date} onChange={(e) => setWork(index, 'date', e.target.value)} />
-                            <Input aria-label={`Past work ${index + 1} image URL`} type="url" placeholder="Image URL (optional)" value={work.image} onChange={(e) => setWork(index, 'image', e.target.value)} />
+                            <ImageUploadField compact label={`Past work ${index + 1} photo`} value={work.image} onChange={(url) => setWork(index, 'image', url)} />
                             <Input aria-label={`Past work ${index + 1} description`} placeholder="Short description (optional)" maxLength={ELECTRICIAN_LIMITS.pastWorkDescription} value={work.description} onChange={(e) => setWork(index, 'description', e.target.value)} />
                             <Button type="button" variant="ghost" size="sm" aria-label={`Remove past work ${index + 1}`} onClick={() => removeWork(index)}>✕</Button>
                         </div>
