@@ -1,7 +1,13 @@
+// Imported (not written as '/src/assets/...' strings) so Vite bundles and fingerprints them.
+// A literal '/src/...' path only works under the dev server; it 404s in the production build.
+import mainShowroom from '../assets/MainShowroom.jpg';
+import electricalSupplies from '../assets/electricalSupplies.jpg';
+import panchamukhi from '../assets/panchamukhi.jpeg';
+
 export const shopImages = [
-    { url: '/src/assets/MainShowroom.jpg', caption: 'Our Main Showroom' },
-    { url: '/src/assets/electricalSupplies.jpg', caption: 'Electrical Supplies' },
-    { url: '/src/assets/panchamukhi.jpeg', caption: 'Our Shop' },
+    { url: mainShowroom, caption: 'Our Main Showroom' },
+    { url: electricalSupplies, caption: 'Electrical Supplies' },
+    { url: panchamukhi, caption: 'Our Shop' },
 ];
 
 export const services = [
