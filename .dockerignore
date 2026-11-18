@@ -1,0 +1,22 @@
+# Keep the build context small and stop local-only files (secrets, build output) leaking into the image.
+**/.git
+**/.vs
+**/.vscode
+**/bin
+**/obj
+**/node_modules
+**/dist
+**/*.user
+**/.env
+**/.env.*
+!**/.env.example
+**/.DS_Store
+
+# Not needed to build the image
+ElectricCenter.Server.Tests
+docs
+plan
+.github
+docker-compose.yml
+Dockerfile
+.dockerignore

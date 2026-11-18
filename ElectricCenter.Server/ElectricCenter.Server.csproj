@@ -25,7 +25,9 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.13.17" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!-- Visual Studio builds the React client through this reference. The Docker image builds it in a separate
+       Node stage and copies it into wwwroot, so it passes -p:SkipClientProject=true (the .NET SDK image has no npm). -->
+  <ItemGroup Condition="'$(SkipClientProject)' != 'true'">
     <ProjectReference Include="..\electriccenter.client\electriccenter.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

@@ -131,7 +131,7 @@ dotnet ef database update --project ElectricCenter.Server
 | `Email__Smtp__Host`, `__Port`, `__UserName`, `__Password`, `__FromAddress` | **Required**: SMTP used to send verification codes. The server won't start without it outside Development |
 | `ASPNETCORE_FORWARDEDHEADERS_ENABLED` | `true` when behind a reverse proxy, so rate limiting sees real client IPs |
 
-The app must be served over HTTPS in production. The refresh cookie is `Secure`.
+The app must be served over HTTPS in production. The refresh cookie is `Secure`. Step-by-step Render instructions are in [DEPLOY.md](DEPLOY.md).
 **Free MySQL hosts:** the connection uses `EnableRetryOnFailure`, so a free-tier database waking from sleep doesn't fail the first request. The server version is fixed to 8.0.x. Any MySQL 8-compatible host works by changing only the connection string.
 
 ## Not done yet

@@ -129,6 +129,9 @@ app.UseRateLimiter();
 
 app.MapControllers();
 
+// Liveness probe for the host (Render's health check). Deliberately doesn't touch the database, so a sleeping free-tier DB can't fail a deploy.
+app.MapGet("/healthz", () => Results.Text("ok"));
+
 app.MapFallbackToFile("/index.html");
 
 app.Run();
