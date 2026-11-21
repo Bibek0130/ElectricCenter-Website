@@ -84,7 +84,8 @@ export function toFormValues(product) {
     return {
         name: product.name,
         categoryId: String(product.categoryId),
-        price: String(product.price),
+        // Admins always receive the price; guard anyway so a missing one shows an empty field, not the text "null".
+        price: product.price == null ? '' : String(product.price),
         discountPercent: String(product.discountPercent ?? 0),
         stock: String(product.stock),
         brand: product.brand ?? '',

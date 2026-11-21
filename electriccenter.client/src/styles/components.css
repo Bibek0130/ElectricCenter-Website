@@ -124,12 +124,30 @@
   white-space: nowrap;
 }
 
-.navbar-toggle {
+/* .btn.navbar-toggle, not just .navbar-toggle: .btn comes later in this file and sets display, which used to win
+   and leave the menu button showing on desktop. */
+.btn.navbar-toggle {
   display: none;
   margin-left: auto;
 }
 
-@media (max-width: 900px) {
+/* Seven links, an account link and a phone number need more room than the old six links did. As the screen narrows:
+   tighten the spacing, then drop the number (the 📞 stays a tap-to-call link), then fold the links into the menu.
+   Admins have two more links (Settings and their name), which never fit beside the number in the 1200px bar. */
+@media (min-width: 1181px) {
+  .navbar-inner { gap: var(--space-4); }
+  .navbar-link { padding: var(--space-2) 10px; }
+}
+
+.navbar--admin .navbar-phone-number {
+  display: none;
+}
+
+@media (max-width: 1280px) {
+  .navbar-phone-number { display: none; }
+}
+
+@media (max-width: 1180px) {
   .navbar-links {
     position: absolute;
     top: var(--header-height);
@@ -148,7 +166,7 @@
   .navbar-links:not(.is-open) { display: none; }
 
   .navbar-phone { display: none; }
-  .navbar-toggle { display: inline-flex; }
+  .btn.navbar-toggle { display: inline-flex; }
 }
 
 /* ============ Footer ============ */

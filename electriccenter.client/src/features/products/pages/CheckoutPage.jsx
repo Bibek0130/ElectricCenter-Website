@@ -8,13 +8,16 @@ import Input from '../../../components/ui/Input.jsx';
 import FormField from '../../../components/ui/FormField.jsx';
 import EmptyState from '../../../components/ui/EmptyState.jsx';
 import { formatCurrency } from '../../../utils/format.js';
+import { useShowPrice } from '../../settings/useSettings.js';
 
 const STEPS = ['Review Cart', 'Shipping', 'Payment'];
 const SHIPPING_COST = 150;
 const FREE_SHIPPING_THRESHOLD = 5000;
 
 function CheckoutPage() {
-    const { items, subtotal, clear } = useCart();
+    const { items, subtotal, priced, clear } = useCart();
+    // No prices, totals or shipping anywhere in checkout while prices are hidden (or an item has none).
+    const showPrices = useShowPrice() && priced;
     const navigate = useNavigate();
     const [step, setStep] = useState(0);
     const [placing, setPlacing] = useState(false);
@@ -40,15 +43,15 @@ function CheckoutPage() {
         setPlacing(true);
         try {
             const result = await productsService.placeOrder({
-                items: items.map((i) => ({ productId: i.id, productName: i.name, quantity: i.qty, unitPrice: i.unitPrice })),
+                items: items.map((i) => ({ productId: i.id, productName: i.name, quantity: i.qty, unitPrice: showPrices ? i.unitPrice : null })),
                 customerName: customer.name,
                 customerEmail: customer.email,
                 customerPhone: customer.phone,
                 shippingAddress: address,
                 paymentMethod: payment.method,
-                subtotal,
-                shippingCost,
-                total,
+                subtotal: showPrices ? subtotal : null,
+                shippingCost: showPrices ? shippingCost : null,
+                total: showPrices ? total : null,
             });
             clear();
             navigate('/products/confirmation', { state: { order: result } });
@@ -83,9 +86,13 @@ function CheckoutPage() {
                                     <div className="cart-item-thumb" style={{ width: 64, height: 64, fontSize: 28 }} aria-hidden="true">⚡</div>
                                     <div style={{ flex: 1 }}>
                                         <p style={{ fontWeight: 600, fontSize: 'var(--text-sm)' }}>{item.name}</p>
-                                        <p style={{ color: 'var(--color-text-muted)', fontSize: 'var(--text-sm)' }}>Qty: {item.qty} × {formatCurrency(item.unitPrice)}</p>
+                                        <p style={{ color: 'var(--color-text-muted)', fontSize: 'var(--text-sm)' }}>
+                                            {showPrices ? <>Qty: {item.qty} × {formatCurrency(item.unitPrice)}</> : <>Qty: {item.qty}</>}
+                                        </p>
                                     </div>
-                                    <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-lg)', fontWeight: 800 }}>{formatCurrency(item.unitPrice * item.qty)}</span>
+                                    {showPrices && (
+                                        <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-lg)', fontWeight: 800 }}>{formatCurrency(item.unitPrice * item.qty)}</span>
+                                    )}
                                 </div>
                             ))}
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 'var(--space-5)' }}>
@@ -167,14 +174,14 @@ function CheckoutPage() {
                             )}
                             {payment.method === 'cod' && (
                                 <p style={{ background: 'var(--color-warning-bg)', borderRadius: 'var(--radius-md)', padding: '14px 16px', fontSize: 'var(--text-sm)', color: 'var(--color-warning-600)' }}>
-                                    💵 Pay <strong>{formatCurrency(total)}</strong> when your order arrives.
+                                    💵 {showPrices ? <>Pay <strong>{formatCurrency(total)}</strong> when your order arrives.</> : 'Pay when your order arrives.'}
                                 </p>
                             )}
 
                             <div style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-6)' }}>
                                 <Button variant="secondary" onClick={() => setStep(1)}>← Back</Button>
                                 <Button onClick={placeOrder} loading={placing} style={{ flex: 1 }}>
-                                    {placing ? 'Placing order…' : `Place order · ${formatCurrency(total)}`}
+                                    {placing ? 'Placing order…' : showPrices ? `Place order · ${formatCurrency(total)}` : 'Place order'}
                                 </Button>
                             </div>
                         </>
@@ -186,20 +193,24 @@ function CheckoutPage() {
                     {items.map((item) => (
                         <div key={item.id} className="cart-summary-row">
                             <span style={{ color: 'var(--color-text-muted)', maxWidth: 170, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name} ×{item.qty}</span>
-                            <span style={{ fontWeight: 600 }}>{formatCurrency(item.unitPrice * item.qty)}</span>
+                            {showPrices && <span style={{ fontWeight: 600 }}>{formatCurrency(item.unitPrice * item.qty)}</span>}
                         </div>
                     ))}
-                    <hr style={{ margin: '12px 0', border: 'none', borderTop: '1px solid var(--color-gray-100)' }} />
-                    <div className="cart-summary-row"><span style={{ color: 'var(--color-text-muted)' }}>Subtotal</span><span style={{ fontWeight: 600 }}>{formatCurrency(subtotal)}</span></div>
-                    <div className="cart-summary-row">
-                        <span style={{ color: 'var(--color-text-muted)' }}>Shipping</span>
-                        <span style={{ fontWeight: 600, color: shippingCost === 0 ? 'var(--color-success-600)' : undefined }}>{shippingCost === 0 ? 'Free' : formatCurrency(shippingCost)}</span>
-                    </div>
-                    <hr style={{ margin: '12px 0', border: 'none', borderTop: '1px solid var(--color-gray-100)' }} />
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ fontWeight: 700 }}>Total</span>
-                        <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-2xl)', fontWeight: 800, color: 'var(--color-primary)' }}>{formatCurrency(total)}</span>
-                    </div>
+                    {showPrices && (
+                        <>
+                            <hr style={{ margin: '12px 0', border: 'none', borderTop: '1px solid var(--color-gray-100)' }} />
+                            <div className="cart-summary-row"><span style={{ color: 'var(--color-text-muted)' }}>Subtotal</span><span style={{ fontWeight: 600 }}>{formatCurrency(subtotal)}</span></div>
+                            <div className="cart-summary-row">
+                                <span style={{ color: 'var(--color-text-muted)' }}>Shipping</span>
+                                <span style={{ fontWeight: 600, color: shippingCost === 0 ? 'var(--color-success-600)' : undefined }}>{shippingCost === 0 ? 'Free' : formatCurrency(shippingCost)}</span>
+                            </div>
+                            <hr style={{ margin: '12px 0', border: 'none', borderTop: '1px solid var(--color-gray-100)' }} />
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ fontWeight: 700 }}>Total</span>
+                                <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-2xl)', fontWeight: 800, color: 'var(--color-primary)' }}>{formatCurrency(total)}</span>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

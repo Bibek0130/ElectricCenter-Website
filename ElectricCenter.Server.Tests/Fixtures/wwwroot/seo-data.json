@@ -1,0 +1,202 @@
+{
+  "site": {
+    "name": "Panchamukhi Electric Center",
+    "titleSuffix": " | Panchamukhi Electric Center",
+    "locale": "en_NP",
+    "language": "en",
+    "defaultDescription": "Panchamukhi Electric Center — electrical products, wiring supplies and vetted electrician booking in Kathmandu, Nepal.",
+    "defaultImage": "/og-default.jpg",
+    "defaultImageAlt": "Panchamukhi Electric Center — electrical supplies and electricians in Kathmandu",
+    "defaultImageWidth": 1200,
+    "defaultImageHeight": 630,
+    "logo": "/logo-512.png",
+    "themeColor": "#dc2626"
+  },
+  "business": {
+    "name": "Panchamukhi Electric Center",
+    "description": "Electrical products, wiring supplies and licensed electricians in Kathmandu, Nepal, serving homes, businesses and contractors since 1995.",
+    "foundingYear": 1995,
+    "phone": "+977-9841445050",
+    "address": {
+      "street": "Panchamukhi Hanuman Mandir, Kharibot, Kumarigal",
+      "locality": "Kathmandu",
+      "region": "Bagmati",
+      "country": "NP"
+    },
+    "geo": {
+      "latitude": 27.714095,
+      "longitude": 85.354542
+    },
+    "openingHours": [
+      {
+        "days": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "09:00",
+        "closes": "19:00"
+      },
+      {
+        "days": [
+          "Saturday"
+        ],
+        "opens": "10:00",
+        "closes": "17:00"
+      }
+    ],
+    "areaServed": [
+      "Kathmandu",
+      "Lalitpur",
+      "Bhaktapur"
+    ],
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=27.714095,85.354542"
+  },
+  "nav": [
+    {
+      "label": "Home",
+      "to": "/"
+    },
+    {
+      "label": "Electricians",
+      "to": "/electricians"
+    },
+    {
+      "label": "Products",
+      "to": "/products"
+    },
+    {
+      "label": "Articles",
+      "to": "/articles"
+    },
+    {
+      "label": "Services",
+      "to": "/services"
+    },
+    {
+      "label": "About Us",
+      "to": "/about"
+    },
+    {
+      "label": "FAQ",
+      "to": "/faq"
+    }
+  ],
+  "pages": {
+    "/": {
+      "title": "Panchamukhi Electric Center | Electrical Supplies, Kathmandu",
+      "description": "Panchamukhi Electric Center — electrical products, wiring supplies and vetted electrician booking in Kathmandu, Nepal. Visit our Kharibot shop or order online.",
+      "heading": "Powering Every Connection",
+      "schema": [
+        "business",
+        "website"
+      ]
+    },
+    "/electricians": {
+      "title": "Electricians in Kathmandu",
+      "description": "Find vetted electricians across Kathmandu valley. Compare specialties, experience and rates, then book online and get a WhatsApp confirmation.",
+      "heading": "Find an Electrician"
+    },
+    "/products": {
+      "title": "Electrical Products & Supplies",
+      "description": "Shop circuit breakers, wiring, switches, lighting, tools and solar equipment from top brands, with delivery across Nepal.",
+      "heading": "Electrical Products"
+    },
+    "/articles": {
+      "title": "Electrical Tips & Guides",
+      "description": "Practical electrical advice from Panchamukhi Electric Center: choosing the right products, wiring safety and keeping your home powered in Nepal.",
+      "heading": "Articles & Guides"
+    },
+    "/services": {
+      "title": "Electrical Services",
+      "description": "Electrical installation, maintenance and repair, consultation and design, and bulk supply for homes, offices and contractors in Kathmandu.",
+      "heading": "Our Services"
+    },
+    "/about": {
+      "title": "About Us",
+      "description": "Panchamukhi Electric Center has supplied Kathmandu with electrical products and vetted electricians since 1995, from a small shop in Kumarigal.",
+      "heading": "About Us"
+    },
+    "/faq": {
+      "title": "Frequently Asked Questions",
+      "description": "Answers about booking an electrician, response times, pricing, service areas, buying parts and getting support from Panchamukhi Electric Center.",
+      "heading": "Frequently Asked Questions",
+      "schema": [
+        "faq"
+      ]
+    },
+    "/login": {
+      "title": "Log in",
+      "robots": "noindex, nofollow"
+    },
+    "/register": {
+      "title": "Create an account",
+      "robots": "noindex, nofollow"
+    },
+    "/verify-email": {
+      "title": "Verify your email",
+      "robots": "noindex, nofollow"
+    },
+    "/account": {
+      "title": "My account",
+      "robots": "noindex, nofollow"
+    },
+    "/settings": {
+      "title": "Settings",
+      "robots": "noindex, nofollow"
+    },
+    "/products/checkout": {
+      "title": "Checkout",
+      "robots": "noindex, nofollow"
+    },
+    "/products/confirmation": {
+      "title": "Order confirmed",
+      "robots": "noindex, nofollow"
+    },
+    "/admin/articles/new": {
+      "title": "New article",
+      "robots": "noindex, nofollow"
+    }
+  },
+  "templates": {
+    "electrician": {
+      "title": "{name} – Electrician in {location}",
+      "description": "{name} is a vetted electrician in {location} with {years} years of experience. See specialties and rates, then book online with Panchamukhi Electric Center."
+    }
+  },
+  "faqs": [
+    {
+      "id": "booking",
+      "question": "How do I book an electrician?",
+      "answer": "Go to the Electricians page, pick one based on their specialty, experience and rate, then open their profile and tap \"Book\". You will get a confirmation and the electrician is notified over WhatsApp."
+    },
+    {
+      "id": "response-time",
+      "question": "How fast can an electrician reach me?",
+      "answer": "Most electricians in Kathmandu valley respond within 1-2 hours for urgent jobs. Response time varies by electrician and current demand, shown on their profile."
+    },
+    {
+      "id": "pricing",
+      "question": "How is pricing determined?",
+      "answer": "Each electrician sets their own rate, shown per hour or per visit on their profile. You will always see the rate before booking; final cost depends on the scope of work."
+    },
+    {
+      "id": "areas",
+      "question": "What areas do you serve?",
+      "answer": "We currently serve Kathmandu valley, including Kumarigal, Kathmandu Metro, Lalitpur, and Bhaktapur. Electrician availability may vary by area."
+    },
+    {
+      "id": "products",
+      "question": "Can I buy parts without booking an electrician?",
+      "answer": "Yes — browse the Products page for circuit breakers, wiring, switches, lighting, tools and solar equipment, with delivery across Nepal."
+    },
+    {
+      "id": "support",
+      "question": "How can I get support?",
+      "answer": "Call or WhatsApp us at +977-9841445050, or visit our store in Kharibot, Kumarigal, Kathmandu during business hours."
+    }
+  ]
+}

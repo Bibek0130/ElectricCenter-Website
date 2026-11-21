@@ -3,12 +3,24 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Panchamukhi Electric Center — electrical products, supplies and vetted electrician booking in Kathmandu, Nepal." />
+    <meta name="theme-color" content="#dc2626" />
+    <!--seo-head-->
+    <!--
+      Everything between the two seo-head markers is replaced, per page, by the server (ElectricCenter.Server/Seo), so
+      crawlers and link previews get the right title, description, canonical link, social tags and structured data
+      without running JavaScript. The seo-body marker inside #root likewise receives a noscript copy of the page
+      (React clears #root as soon as the app starts). What is written here is only the default Vite's dev server shows,
+      and this comment is dropped along with it.
+    -->
     <title>Panchamukhi Electric Center</title>
+    <meta name="description" content="Panchamukhi Electric Center — electrical products, supplies and vetted electrician booking in Kathmandu, Nepal." />
+    <!--/seo-head-->
 </head>
-  <body>
-    <div id="root"></div>
+<body>
+    <div id="root"><!--seo-body--></div>
     <script type="module" src="/src/main.jsx"></script>
-  </body>
+</body>
 </html>

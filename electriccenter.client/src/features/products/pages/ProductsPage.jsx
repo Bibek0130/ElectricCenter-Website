@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useProducts } from '../hooks/useProducts.js';
 import { useCategories } from '../hooks/useCategories.js';
@@ -17,6 +18,7 @@ import ProductFormModal from '../components/ProductFormModal.jsx';
 import { productsService } from '../../../services/productsService.js';
 import { useAuth } from '../../auth/useAuth.js';
 import { ROLES } from '../../auth/context.js';
+import { useSettings } from '../../settings/useSettings.js';
 
 const INITIAL_FILTERS = { search: '', categoryId: '', minPrice: '', maxPrice: '', sort: 'default', includeDeleted: false };
 
@@ -35,8 +37,15 @@ function ProductsPage() {
     const [pendingDelete, setPendingDelete] = useState(null);
     const [busyId, setBusyId] = useState(null);
 
+    // While prices are hidden there is nothing to filter or sort by price on: the controls are hidden below and
+    // the price filters/sorts are never sent (the server ignores them for non-admins too).
+    const { showPrice, status: settingsStatus } = useSettings();
+    const priceRules = showPrice
+        ? filters
+        : { ...filters, minPrice: '', maxPrice: '', sort: filters.sort.startsWith('price_') ? 'default' : filters.sort };
+
     // Only an admin can ask for deleted products; drop the flag if the role goes away (e.g. logout).
-    const effectiveFilters = isAdmin ? filters : { ...filters, includeDeleted: false };
+    const effectiveFilters = isAdmin ? priceRules : { ...priceRules, includeDeleted: false };
     const { products, loading, error, refetch } = useProducts(effectiveFilters);
 
     const handleSaved = (saved, created) => {
@@ -137,6 +146,12 @@ function ProductsPage() {
                 </div>
             </nav>
 
+            {isAdmin && settingsStatus === 'ready' && !showPrice && (
+                <p className="price-hidden-note" role="status">
+                    Prices are hidden from customers. You still see them in the editor. Change this in <Link to="/settings">Settings</Link>.
+                </p>
+            )}
+
             <div className="products-layout">
                 <aside className="filters-panel">
                     <Card>
@@ -151,25 +166,27 @@ function ProductsPage() {
                             </button>
                         </div>
 
-                        <div className="filter-section">
-                            <p className="filter-section-title">Price range (Rs)</p>
-                            <div className="filter-price-row">
-                                <input
-                                    className="input"
-                                    type="number"
-                                    placeholder="Min"
-                                    value={filters.minPrice}
-                                    onChange={(e) => setFilters((f) => ({ ...f, minPrice: e.target.value }))}
-                                />
-                                <input
-                                    className="input"
-                                    type="number"
-                                    placeholder="Max"
-                                    value={filters.maxPrice}
-                                    onChange={(e) => setFilters((f) => ({ ...f, maxPrice: e.target.value }))}
-                                />
+                        {showPrice && (
+                            <div className="filter-section">
+                                <p className="filter-section-title">Price range (Rs)</p>
+                                <div className="filter-price-row">
+                                    <input
+                                        className="input"
+                                        type="number"
+                                        placeholder="Min"
+                                        value={filters.minPrice}
+                                        onChange={(e) => setFilters((f) => ({ ...f, minPrice: e.target.value }))}
+                                    />
+                                    <input
+                                        className="input"
+                                        type="number"
+                                        placeholder="Max"
+                                        value={filters.maxPrice}
+                                        onChange={(e) => setFilters((f) => ({ ...f, maxPrice: e.target.value }))}
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {isAdmin && (
                             <div className="filter-section">
@@ -192,12 +209,12 @@ function ProductsPage() {
                                 ['price_asc', 'Price: Low → High'],
                                 ['price_desc', 'Price: High → Low'],
                                 ['name', 'Name A→Z'],
-                            ].map(([value, label]) => (
+                            ].filter(([value]) => showPrice || !value.startsWith('price_')).map(([value, label]) => (
                                 <label key={value} className="filter-sort-option">
                                     <input
                                         type="radio"
                                         name="sort"
-                                        checked={filters.sort === value}
+                                        checked={priceRules.sort === value}
                                         onChange={() => setFilters((f) => ({ ...f, sort: value }))}
                                     />
                                     {label}

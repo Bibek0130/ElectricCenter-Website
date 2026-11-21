@@ -2,15 +2,8 @@ import { useMemo, useState } from 'react';
 import Section from '../../components/layout/Section.jsx';
 import Input from '../../components/ui/Input.jsx';
 import EmptyState from '../../components/ui/EmptyState.jsx';
+import { FAQS } from '../../seo/faqs.js';
 
-const FAQS = [
-    { id: 'booking', question: 'How do I book an electrician?', answer: 'Go to the Electricians page, pick one based on their specialty, experience and rate, then open their profile and tap "Book". You will get a confirmation and the electrician is notified over WhatsApp.' },
-    { id: 'response-time', question: 'How fast can an electrician reach me?', answer: 'Most electricians in Kathmandu valley respond within 1-2 hours for urgent jobs. Response time varies by electrician and current demand, shown on their profile.' },
-    { id: 'pricing', question: 'How is pricing determined?', answer: 'Each electrician sets their own rate, shown per hour or per visit on their profile. You will always see the rate before booking; final cost depends on the scope of work.' },
-    { id: 'areas', question: 'What areas do you serve?', answer: 'We currently serve Kathmandu valley, including Kumarigal, Kathmandu Metro, Lalitpur, and Bhaktapur. Electrician availability may vary by area.' },
-    { id: 'products', question: 'Can I buy parts without booking an electrician?', answer: 'Yes — browse the Products page for circuit breakers, wiring, switches, lighting, tools and solar equipment, with delivery across Nepal.' },
-    { id: 'support', question: 'How can I get support?', answer: 'Call or WhatsApp us at +977-9841445050, or visit our store in Kharibot, Kumarigal, Kathmandu during business hours.' },
-];
 
 function generatePanelId(id) { return `faq-panel-${id}`; }
 function generateButtonId(id) { return `faq-button-${id}`; }
@@ -87,7 +80,9 @@ export default function FaqPage() {
                                             background: 'var(--color-gray-50)',
                                         }}
                                     >
-                                        {expanded && <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.6 }}>{item.answer}</p>}
+                                        {/* Always rendered, just hidden while closed: the FAQ structured data on this page quotes
+                                            these answers, and search engines only trust markup that matches text in the page. */}
+                                        <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.6 }}>{item.answer}</p>
                                     </div>
                                 </li>
                             );

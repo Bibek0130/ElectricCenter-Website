@@ -1,24 +1,17 @@
 import { NavLink } from 'react-router-dom';
 import { useDisclosure } from '../../hooks/useDisclosure.js';
 import { useAuth } from '../../features/auth/useAuth.js';
-
-const NAV_LINKS = [
-    { label: 'Home', to: '/home' },
-    { label: 'Electricians', to: '/electricians' },
-    { label: 'Products', to: '/products' },
-    { label: 'Services', to: '/services' },
-    { label: 'About Us', to: '/about' },
-    { label: 'FAQ', to: '/faq' },
-];
+import { ROLES } from '../../features/auth/context.js';
+import { NAV_LINKS } from '../../seo/siteSeo.js';
 
 function Navbar() {
     const mobileMenu = useDisclosure(false);
-    const { status, user } = useAuth();
+    const { status, user, hasRole } = useAuth();
 
     return (
-        <header className="navbar">
+        <header className={`navbar${hasRole(ROLES.Admin) ? ' navbar--admin' : ''}`}>
             <div className="navbar-inner">
-                <NavLink to="/home" className="navbar-brand" onClick={mobileMenu.close}>
+                <NavLink to="/" className="navbar-brand" onClick={mobileMenu.close}>
                     <span className="navbar-brand-icon" aria-hidden="true">⚡</span>
                     Panchamukhi Electric Center
                 </NavLink>
@@ -39,12 +32,23 @@ function Navbar() {
                         <NavLink
                             key={link.to}
                             to={link.to}
+                            end={link.to === '/'}
                             className={({ isActive }) => `navbar-link${isActive ? ' is-active' : ''}`}
                             onClick={mobileMenu.close}
                         >
                             {link.label}
                         </NavLink>
                     ))}
+
+                    {hasRole(ROLES.Admin) && (
+                        <NavLink
+                            to="/settings"
+                            className={({ isActive }) => `navbar-link${isActive ? ' is-active' : ''}`}
+                            onClick={mobileMenu.close}
+                        >
+                            ⚙ Settings
+                        </NavLink>
+                    )}
 
                     {status !== 'loading' && (
                         <NavLink
@@ -58,7 +62,7 @@ function Navbar() {
                 </nav>
 
                 <a href="tel:+9779841445050" className="navbar-phone">
-                    <span aria-hidden="true">📞</span> +977-9841445050
+                    <span aria-hidden="true">📞</span> <span className="navbar-phone-number">+977-9841445050</span>
                 </a>
             </div>
         </header>

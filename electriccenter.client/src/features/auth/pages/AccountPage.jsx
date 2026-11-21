@@ -58,7 +58,7 @@ function AccountPage() {
     const [signingOutEverywhere, setSigningOutEverywhere] = useState(false);
 
     const handleLogout = async () => {
-        navigate('/home', { replace: true });
+        navigate('/', { replace: true });
         await logout();
         toast.success('You have been logged out.');
     };
@@ -67,7 +67,7 @@ function AccountPage() {
         setSigningOutEverywhere(true);
         try {
             await logoutAllDevices();
-            navigate('/home', { replace: true });
+            navigate('/', { replace: true });
             toast.success('Signed out on all devices.');
         } catch (err) {
             toast.error(err.message);

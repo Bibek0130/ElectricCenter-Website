@@ -1,6 +1,7 @@
 using ElectricCenter.Server.Auth;
 using ElectricCenter.Server.Contracts;
 using ElectricCenter.Server.Products;
+using ElectricCenter.Server.Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,16 @@ namespace ElectricCenter.Server.Controllers
     /// </summary>
     [ApiController]
     [Route("api/products")]
-    public class ProductsController(IProductService products) : ControllerBase
+    public class ProductsController(IProductService products, ISiteSettingsService settings) : ControllerBase
     {
         private bool IsAdmin => User.IsInRole(Roles.Admin);
+
+        /// <summary>
+        /// Prices go out when the "Show price" setting is on. Admins always get them: the edit form needs the
+        /// price, and an admin can't save a product without one. (The storefront still hides them while the setting is off.)
+        /// </summary>
+        private async Task<bool> PricesVisibleAsync(CancellationToken ct) =>
+            IsAdmin || (await settings.GetAsync(ct)).ShowPrice;
 
         /// <param name="includeDeleted">Admins only: also return soft-deleted products (ignored for everyone else).</param>
         [HttpGet]
@@ -28,16 +36,21 @@ namespace ElectricCenter.Server.Controllers
             [FromQuery] bool includeDeleted,
             CancellationToken ct)
         {
-            var items = await products.ListAsync(new ProductQuery(search, categoryId, minPrice, maxPrice, sort, includeDeleted && IsAdmin), ct);
-            return Ok(new { items = items.Select(ProductDto.From), total = items.Count });
+            var includePrice = await PricesVisibleAsync(ct);
+            var query = new ProductQuery(search, categoryId, minPrice, maxPrice, sort, includeDeleted && IsAdmin);
+
+            // Hidden prices must not be recoverable through the price filter or sort, so ignore both.
+            var items = await products.ListAsync(includePrice ? query : query.WithoutPriceRules(), ct);
+            return Ok(new { items = items.Select(p => ProductDto.From(p, includePrice)), total = items.Count });
         }
 
         [HttpGet("{id:int}")]
         [AllowAnonymous]
         public async Task<IActionResult> Get(int id, CancellationToken ct)
         {
+            var includePrice = await PricesVisibleAsync(ct);
             var product = await products.GetAsync(id, includeDeleted: IsAdmin, ct);
-            return product is null ? NotFound(new { message = "Product not found." }) : Ok(ProductDto.From(product));
+            return product is null ? NotFound(new { message = "Product not found." }) : Ok(ProductDto.From(product, includePrice));
         }
 
         [HttpPost]

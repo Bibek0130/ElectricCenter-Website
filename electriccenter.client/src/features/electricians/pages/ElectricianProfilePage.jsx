@@ -14,6 +14,8 @@ import DemandBadge from '../components/DemandBadge.jsx';
 import PastWorkGallery from '../components/PastWorkGallery.jsx';
 import BookingModal from '../components/BookingModal.jsx';
 import { formatCurrency } from '../../../utils/format.js';
+import { useSeo } from '../../../seo/useSeo.js';
+import { electricianSeo } from '../../../seo/siteSeo.js';
 
 function ElectricianProfilePage() {
     const { electricianId } = useParams();
@@ -22,6 +24,19 @@ function ElectricianProfilePage() {
     const { isAuthenticated } = useAuth();
     const { electrician, loading, error, refetch } = useElectrician(electricianId);
     const bookingModal = useDisclosure(false);
+
+    // Leave the server-written tags alone until the profile loads. A deleted profile (only admins can open one) is kept out of search.
+    useSeo(
+        electrician
+            ? {
+                ...electricianSeo(electrician),
+                path: `/electricians/${electrician.id}`,
+                noindex: Boolean(electrician.isDeleted),
+                image: electrician.photo?.startsWith('https://') ? electrician.photo : undefined,
+                imageAlt: electrician.name,
+            }
+            : null
+    );
 
     // Booking requires an account: send guests to log in, then bring them back here.
     const requestBooking = () => {
