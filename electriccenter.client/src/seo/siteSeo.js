@@ -28,7 +28,7 @@ export const SITE = Object.freeze({
     defaultImageAlt: 'Panchamukhi Electric Center — electrical supplies and electricians in Kathmandu',
     defaultImageWidth: 1200,
     defaultImageHeight: 630,
-    logo: '/logo-512.png',
+    logo: '/logo.png',
     themeColor: '#dc2626',
 });
 
