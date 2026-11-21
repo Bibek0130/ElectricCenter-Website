@@ -14,7 +14,7 @@ This is how the site tells search engines (and WhatsApp, Facebook and the like) 
 | **`/home` and `/index.html` redirect (301) to `/`**, so the home page has one address | same |
 | **`noindex`** on login, account, checkout, settings and admin pages | same, plus `src/seo/siteSeo.js` |
 | **Articles**: a list at `/articles`, a page per article at `/articles/{slug}`, and an admin editor | `src/features/articles`, `ElectricCenter.Server/Articles` |
-| A branded **favicon**, touch icon and 1200×630 **share image** (they were the default Vite bolt) | `electriccenter.client/public` |
+| The **round brand logo** in the header, footer, browser tab, home-screen icon, structured data and the 1200×630 **share image** | `electriccenter.client/public` |
 
 ## How a page gets its SEO
 
@@ -26,6 +26,21 @@ The site is a single-page app: the browser downloads one HTML file and JavaScrip
 4. In the browser, `useSeo` keeps the tab title, description and canonical link correct as people move between pages. It starts from what the server wrote, so nothing flickers.
 
 Because the browser and the server read the **same** data, they can't disagree about a page's title.
+
+## Changing the logo
+
+Everything comes from one picture. These files in `electriccenter.client/public` are all made from it:
+
+| File | Used for |
+|---|---|
+| `logo.png` | the header and footer (`SITE.logo` in `siteSeo.js` sets the path), and the logo in the structured data. Cropped to the ring, with transparent corners |
+| `favicon-32.png`, `favicon-48.png`, `favicon-192.png` | the browser tab and Android (Google wants multiples of 48 px) |
+| `apple-touch-icon.png` | the iPhone home-screen icon (white square; iOS rounds the corners itself) |
+| `og-default.jpg` | the 1200×630 picture shown when a page without its own picture is shared |
+
+To change the logo, replace `logo.png` and rebuild the other four from it. A browser keeps tab icons for a long time, so you may need a hard refresh to see a new one, and Google updates the icon beside your result the next time it visits.
+
+The lettering around the ring can't be read below about 100 px, so the name is also written beside the logo in the header and footer. For sharper results at large sizes, replace `logo.png` with a bigger picture or an SVG; the current one is about 250 px across.
 
 ## Adding or changing a page
 

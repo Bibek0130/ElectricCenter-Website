@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
     BUSINESS, FAQS, NAV_LINKS, PAGES, ROBOTS_NOINDEX, SITE, TEMPLATES,
@@ -186,10 +186,24 @@ describe('index.html', () => {
     });
 
     it('declares the icons and the theme colour the brand images were made for', () => {
-        expect(html).toContain('href="/favicon.svg"');
+        expect(html).toContain('href="/favicon-32.png"');
         expect(html).toContain('href="/favicon-48.png"');
+        expect(html).toContain('href="/favicon-192.png"');
         expect(html).toContain('href="/apple-touch-icon.png"');
         expect(html).toContain(`<meta name="theme-color" content="${SITE.themeColor}"`);
+    });
+
+    it('has no SVG icon (browsers prefer one, so an old SVG would keep showing the previous logo in the tab)', () => {
+        expect(html).not.toMatch(/rel="icon"[^>]*image\/svg/);
+        expect(html).not.toContain('favicon.svg');
+    });
+
+    it('only points at images that exist in public/ (a missing one is a broken icon or share picture nobody notices)', () => {
+        const inPage = [...html.matchAll(/(?:href|src)="(\/[^"]+\.(?:png|jpe?g|svg|ico|webp))"/g)].map((match) => match[1]);
+        const referenced = [...new Set([...inPage, SITE.defaultImage, SITE.logo])];
+
+        expect(referenced.length).toBeGreaterThanOrEqual(6);
+        for (const file of referenced) expect(existsSync(new URL(`../../public${file}`, import.meta.url)), file).toBe(true);
     });
 });
 

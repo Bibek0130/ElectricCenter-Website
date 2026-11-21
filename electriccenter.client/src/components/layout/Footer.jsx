@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { SITE } from '../../seo/siteSeo.js';
 
 const EXPLORE_LINKS = [
     { label: 'Electricians', to: '/electricians' },
@@ -21,7 +22,7 @@ function Footer() {
             <div className="footer-grid">
                 <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 'var(--space-5)' }}>
-                        <span className="navbar-brand-icon" aria-hidden="true">⚡</span>
+                        <img className="brand-logo brand-logo--footer" src={SITE.logo} alt="" width="64" height="64" />
                         <div>
                             <div style={{ fontSize: 'var(--text-base)', fontWeight: 700 }}>Electric Center</div>
                             <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-400)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Kathmandu, Nepal</div>

@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useDisclosure } from '../../hooks/useDisclosure.js';
 import { useAuth } from '../../features/auth/useAuth.js';
 import { ROLES } from '../../features/auth/context.js';
-import { NAV_LINKS } from '../../seo/siteSeo.js';
+import { NAV_LINKS, SITE } from '../../seo/siteSeo.js';
 
 function Navbar() {
     const mobileMenu = useDisclosure(false);
@@ -12,8 +12,9 @@ function Navbar() {
         <header className={`navbar${hasRole(ROLES.Admin) ? ' navbar--admin' : ''}`}>
             <div className="navbar-inner">
                 <NavLink to="/" className="navbar-brand" onClick={mobileMenu.close}>
-                    <span className="navbar-brand-icon" aria-hidden="true">⚡</span>
-                    Panchamukhi Electric Center
+                    {/* Decorative (alt=""): the name beside it says the same thing, and the lettering in the logo is too small to read here. */}
+                    <img className="brand-logo" src={SITE.logo} alt="" width="52" height="52" />
+                    <span className="navbar-brand-text">Panchamukhi Electric Center</span>
                 </NavLink>
 
                 <button

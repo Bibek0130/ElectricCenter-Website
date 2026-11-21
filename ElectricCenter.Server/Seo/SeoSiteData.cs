@@ -100,7 +100,7 @@ namespace ElectricCenter.Server.Seo
             new SeoSite(
                 "Panchamukhi Electric Center", " | Panchamukhi Electric Center", "en_NP", "en",
                 "Panchamukhi Electric Center — electrical products, wiring supplies and vetted electrician booking in Kathmandu, Nepal.",
-                "/og-default.jpg", "Panchamukhi Electric Center", 1200, 630, "/logo-512.png", "#dc2626"),
+                "/og-default.jpg", "Panchamukhi Electric Center", 1200, 630, "/logo.png", "#dc2626"),
             new SeoBusiness(
                 "Panchamukhi Electric Center", "Electrical products and electricians in Kathmandu, Nepal.", 1995, "+977-9841445050",
                 new SeoAddress("Kharibot, Kumarigal", "Kathmandu", "Bagmati", "NP"), new SeoGeo(27.714095, 85.354542),
