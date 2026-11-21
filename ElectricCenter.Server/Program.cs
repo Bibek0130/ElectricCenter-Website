@@ -1,9 +1,12 @@
 using System.Threading.RateLimiting;
+using ElectricCenter.Server.Articles;
 using ElectricCenter.Server.Auth;
 using ElectricCenter.Server.Data;
 using ElectricCenter.Server.Electricians;
 using ElectricCenter.Server.Uploads;
 using ElectricCenter.Server.Products;
+using ElectricCenter.Server.Seo;
+using ElectricCenter.Server.Settings;
 using ElectricCenter.Server.Services.Email.Interface;
 using ElectricCenter.Server.Services.Email.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -46,6 +49,9 @@ builder.Services.Configure<EmailVerificationOptions>(builder.Configuration.GetSe
 builder.Services.AddScoped<IEmailVerificationService, EmailVerificationService>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ISiteSettingsService, SiteSettingsService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddSeo();
 builder.Services.AddScoped<IElectricianService, ElectricianService>();
 
 // ---------- Rate limiting for the auth endpoints (per client IP) ----------
@@ -112,7 +118,8 @@ if (!smtpConfigured)
 
 await DatabaseInitializer.InitializeAsync(app.Services);
 
-app.UseDefaultFiles();
+// No UseDefaultFiles: it would serve the raw index.html for "/". The home page, like every other page, goes through
+// MapSeo below, which writes that page's own title, description and structured data into the HTML.
 app.MapStaticAssets();
 
 // Configure the HTTP request pipeline.
@@ -122,6 +129,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference("/api-docs");
 }
 app.UseHttpsRedirection();
+app.UseSeoRules(); // /home and /index.html -> /, and "noindex" on API responses
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -132,7 +140,8 @@ app.MapControllers();
 // Liveness probe for the host (Render's health check). Deliberately doesn't touch the database, so a sleeping free-tier DB can't fail a deploy.
 app.MapGet("/healthz", () => Results.Text("ok"));
 
-app.MapFallbackToFile("/index.html");
+// robots.txt, sitemap.xml and the single-page app's HTML (with per-page SEO tags). See Seo/SeoEndpoints.cs.
+app.MapSeo();
 
 app.Run();
 

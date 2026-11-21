@@ -40,11 +40,16 @@ export function CartProvider({ children }) {
     }, [items]);
 
     const value = useMemo(() => {
-        const subtotal = items.reduce((sum, item) => sum + item.unitPrice * item.qty, 0);
+        const subtotal = items.reduce((sum, item) => sum + (item.unitPrice ?? 0) * item.qty, 0);
         const count = items.reduce((sum, item) => sum + item.qty, 0);
         return {
             items,
             subtotal,
+            /**
+             * False when any item has no price (it was added while prices were hidden), so `subtotal` would be
+             * wrong. Show cart prices and totals only when this is true AND the "Show price" setting is on.
+             */
+            priced: items.every((item) => typeof item.unitPrice === 'number'),
             count,
             addItem: (product, qty = 1) => dispatch({ type: 'ADD', product, qty }),
             setItemQty: (id, qty) => dispatch({ type: 'SET_QTY', id, qty }),

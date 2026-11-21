@@ -46,9 +46,26 @@ function loadDevCertificate() {
 const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}` :
     env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'https://localhost:7023';
 
+/**
+ * Writes `seo-data.json` next to index.html, generated from src/seo/siteSeo.js: the same module the browser reads for
+ * titles and descriptions. The server loads this file so the tags it writes into each page's HTML (for crawlers and
+ * link previews, which don't run JavaScript) can never disagree with the ones the browser sets.
+ * See Seo/SeoSiteData.cs on the server for the matching shape.
+ */
+function emitSeoData() {
+    return {
+        name: 'emit-seo-data',
+        apply: 'build',
+        async generateBundle() {
+            const { toServerData } = await import(new URL('./src/seo/siteSeo.js', import.meta.url).href);
+            this.emitFile({ type: 'asset', fileName: 'seo-data.json', source: JSON.stringify(toServerData(), null, 2) });
+        },
+    };
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ command }) => ({
-    plugins: [plugin()],
+    plugins: [plugin(), emitSeoData()],
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))

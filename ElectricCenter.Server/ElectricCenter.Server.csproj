@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
+    <!-- Article bodies are written in Markdown and rendered to HTML on the server (see Articles/ArticleMarkdown.cs). -->
+    <PackageReference Include="Markdig" Version="1.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">

@@ -103,6 +103,14 @@
   top: calc(var(--header-height) + var(--space-4));
 }
 
+/* Single-column layout: the filters sit above the product list, so a sticky
+   panel would float over the whole list while scrolling and hide product details. */
+@media (max-width: 860px) {
+  .filters-panel {
+    position: static;
+  }
+}
+
 .filters-panel-header {
   display: flex;
   justify-content: space-between;
@@ -464,6 +472,13 @@
 .order-summary-card {
   position: sticky;
   top: calc(var(--header-height) + var(--space-4));
+}
+
+/* Matches the single-column breakpoint of .checkout-grid. */
+@media (max-width: 800px) {
+  .order-summary-card {
+    position: static;
+  }
 }
 
 .payment-method-row {

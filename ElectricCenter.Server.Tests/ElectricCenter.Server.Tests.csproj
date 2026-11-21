@@ -24,4 +24,10 @@
     <ProjectReference Include="..\ElectricCenter.Server\ElectricCenter.Server.csproj" />
   </ItemGroup>
 
+  <!-- A stand-in web root for the SEO tests: an index.html shaped like the client build's, and the seo-data.json that
+       build writes (generated from electriccenter.client/src/seo/siteSeo.js; the client tests check the shape still matches). -->
+  <ItemGroup>
+    <None Update="Fixtures\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

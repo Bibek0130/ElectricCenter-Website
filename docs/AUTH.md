@@ -153,6 +153,38 @@ Products now live in MySQL (`Products`, `Categories`) instead of `src/data/produ
 | `PUT /api/products/{id}` | Admin | Body must include the `version` the admin loaded. **409** if someone saved in between (optimistic concurrency) |
 | `DELETE /api/products/{id}` | Admin | **Soft delete.** Sets `IsDeleted`, `DeletedAtUtc` and `DeletedByUserId`. Returns the product so the UI can offer Undo |
 | `POST /api/products/{id}/restore` | Admin | Un-deletes |
+| `GET /api/settings` | – | `{ "showPrice": true }`. Never cached. The storefront reads it to decide what to render |
+| `PUT /api/settings` | Admin | Body `{ "showPrice": false }`. `showPrice` is required: a body without it is a **400**, so a typo can't switch prices off |
+
+### Articles
+
+Articles are written by admins in Markdown and published at `/articles/{slug}`. See [SEO.md](SEO.md) for how they're rendered and found by search engines.
+
+| Method & path | Auth | Notes |
+|---|---|---|
+| `GET /api/articles` | – | Published articles, newest first (up to 200), without their text. `{ items, total }` |
+| `GET /api/articles/{slug}` | – | One published article with its text as safe HTML (`bodyHtml`). **404** for a draft, a deleted article or an unknown slug (the public can't tell which) |
+| `GET /api/admin/articles` | Admin | Drafts included. `includeDeleted=true` adds deleted ones |
+| `GET /api/admin/articles/{id}` | Admin | Any article, with its Markdown source and `version` |
+| `POST /api/admin/articles` | Admin | 201 + article. A blank `slug` is made from the title (and numbered if taken); a typed one that's taken is a **409**. A blank `authorName` means the signed-in admin |
+| `PUT /api/admin/articles/{id}` | Admin | Body must include the `version` the admin loaded. **409** if someone saved in between. Publishing sets the date the first time; unpublishing and republishing keeps it |
+| `DELETE /api/admin/articles/{id}` | Admin | **Soft delete**, like products. A deleted article must be restored before it can be edited. Its slug stays reserved |
+| `POST /api/admin/articles/{id}/restore` | Admin | Un-deletes |
+| `POST /api/admin/articles/preview` | Admin | `{ markdown }` → `{ html }`, rendered exactly as the public page will show it |
+
+The Markdown is rendered on the server, and the HTML is safe by construction: raw HTML in the text is escaped, link and image addresses are checked (`javascript:`, `data:` and the like become `#`; images must be `https`), and a `#` heading becomes an `<h2>` because the title is the page's only `<h1>`. The editor's Preview calls the same code, so it can't disagree with the live page.
+
+### Show price (admin Settings page)
+
+Admins can turn product prices off from **Settings** in the navbar (`/settings`, admin-only). The switch is one row in the `SiteSettings` table (created and set to "on" by the `AddSiteSettings` migration).
+
+While it's **off**, for everyone except admins:
+- `GET /api/products` and `GET /api/products/{id}` return `"price": null` and `"discountPercent": 0` (everything else is unchanged).
+- `minPrice`, `maxPrice` and the `price_asc` / `price_desc` sorts are **ignored**. Otherwise a visitor could work out prices by probing, e.g. `?minPrice=4000`.
+
+**Admins always receive prices**, because the product editor needs them and a product can't be saved without one. The storefront still hides them for admins while the switch is off (it shows a note saying so), so an admin sees what customers see.
+
+The price is read from the database as usual and blanked when the response is built, so it never leaves the server. Electrician rates are a separate thing and are not affected by this switch.
 
 **Products are never hard-deleted.** Three layers enforce this:
 1. There is no hard-delete endpoint.

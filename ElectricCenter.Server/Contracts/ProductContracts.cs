@@ -13,7 +13,7 @@ namespace ElectricCenter.Server.Contracts
         string Name,
         int CategoryId,
         string CategoryName,
-        decimal Price,
+        decimal? Price,
         int DiscountPercent,
         int Stock,
         string? Brand,
@@ -29,8 +29,18 @@ namespace ElectricCenter.Server.Contracts
         bool IsDeleted,
         DateTime? DeletedAt)
     {
-        public static ProductDto From(Product p) => new(
-            p.Id, p.Name, p.CategoryId, p.Category.Name, p.Price, p.DiscountPercent, p.Stock, p.Brand, p.Sku,
+        /// <summary>The full product, price included. For admin-only endpoints; public reads must use the overload below.</summary>
+        public static ProductDto From(Product p) => From(p, includePrice: true);
+
+        /// <summary>
+        /// With <paramref name="includePrice"/> false (the "Show price" setting is off and the caller isn't an admin),
+        /// <see cref="Price"/> is null and the discount is 0, so nothing about pricing leaves the server.
+        /// </summary>
+        public static ProductDto From(Product p, bool includePrice) => new(
+            p.Id, p.Name, p.CategoryId, p.Category.Name,
+            includePrice ? p.Price : null,
+            includePrice ? p.DiscountPercent : 0,
+            p.Stock, p.Brand, p.Sku,
             p.ShortDescription, p.Description, p.IsFeatured, p.ImageUrl, p.Specs, p.Version,
             p.CreatedAtUtc, p.UpdatedAtUtc, p.IsDeleted, p.DeletedAtUtc);
     }

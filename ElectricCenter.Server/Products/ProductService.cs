@@ -46,7 +46,19 @@ namespace ElectricCenter.Server.Products
         decimal? MinPrice = null,
         decimal? MaxPrice = null,
         string? Sort = null,
-        bool IncludeDeleted = false);
+        bool IncludeDeleted = false)
+    {
+        /// <summary>
+        /// The same query without anything that depends on price. Used when prices are hidden: a price-range
+        /// filter (or a price sort) would otherwise let a visitor work out prices the response doesn't show.
+        /// </summary>
+        public ProductQuery WithoutPriceRules() => this with
+        {
+            MinPrice = null,
+            MaxPrice = null,
+            Sort = Sort is "price_asc" or "price_desc" ? null : Sort,
+        };
+    }
 
     public interface IProductService
     {

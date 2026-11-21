@@ -124,12 +124,30 @@
   white-space: nowrap;
 }
 
-.navbar-toggle {
+/* .btn.navbar-toggle, not just .navbar-toggle: .btn comes later in this file and sets display, which used to win
+   and leave the menu button showing on desktop. */
+.btn.navbar-toggle {
   display: none;
   margin-left: auto;
 }
 
-@media (max-width: 900px) {
+/* Seven links, an account link and a phone number need more room than the old six links did. As the screen narrows:
+   tighten the spacing, then drop the number (the 📞 stays a tap-to-call link), then fold the links into the menu.
+   Admins have two more links (Settings and their name), which never fit beside the number in the 1200px bar. */
+@media (min-width: 1181px) {
+  .navbar-inner { gap: var(--space-4); }
+  .navbar-link { padding: var(--space-2) 10px; }
+}
+
+.navbar--admin .navbar-phone-number {
+  display: none;
+}
+
+@media (max-width: 1280px) {
+  .navbar-phone-number { display: none; }
+}
+
+@media (max-width: 1180px) {
   .navbar-links {
     position: absolute;
     top: var(--header-height);
@@ -148,7 +166,7 @@
   .navbar-links:not(.is-open) { display: none; }
 
   .navbar-phone { display: none; }
-  .navbar-toggle { display: inline-flex; }
+  .btn.navbar-toggle { display: inline-flex; }
 }
 
 /* ============ Footer ============ */
@@ -596,6 +614,32 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: var(--space-5);
+}
+
+/* Store locator: map beside the details card; stacked (map first) on mobile. */
+.store-locator {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.store-locator-map {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  aspect-ratio: 16 / 7;
+}
+
+@media (max-width: 860px) {
+  .store-locator {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .store-locator-map {
+    aspect-ratio: 4 / 3;
+  }
 }
 
 .hide-scrollbar::-webkit-scrollbar { display: none; }

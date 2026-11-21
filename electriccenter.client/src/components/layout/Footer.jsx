@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom';
+
 const EXPLORE_LINKS = [
     { label: 'Electricians', to: '/electricians' },
     { label: 'Products Catalogue', to: '/products' },
+    { label: 'Articles & Guides', to: '/articles' },
     { label: 'Our Services', to: '/services' },
     { label: 'About Us', to: '/about' },
 ];
@@ -34,7 +37,7 @@ function Footer() {
                     <h4 className="footer-heading">Explore</h4>
                     <ul className="footer-link-list">
                         {EXPLORE_LINKS.map((l) => (
-                            <li key={l.label}><a href={l.to}><span aria-hidden="true">▸</span> {l.label}</a></li>
+                            <li key={l.label}><Link to={l.to}><span aria-hidden="true">▸</span> {l.label}</Link></li>
                         ))}
                     </ul>
                 </div>
@@ -43,7 +46,7 @@ function Footer() {
                     <h4 className="footer-heading">Quick Links</h4>
                     <ul className="footer-link-list">
                         {QUICK_LINKS.map((l) => (
-                            <li key={l.label}><a href={l.to}>{l.label}</a></li>
+                            <li key={l.label}><Link to={l.to}>{l.label}</Link></li>
                         ))}
                     </ul>
                     <div className="footer-hours">

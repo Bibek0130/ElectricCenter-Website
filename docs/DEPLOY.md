@@ -56,6 +56,8 @@ Afterwards you can delete `Seed__Admin__Password` from the environment. It's onl
 
 Render → the service → **Settings → Custom Domains → Add**. Render shows the DNS records to create at your .com.np registrar, and it issues the HTTPS certificate automatically once they resolve. Then add the domain to your Google Maps key's HTTP referrer list.
 
+**Then set `Site__BaseUrl` to `https://panchamukhielectriccenter.com.np`** (Render → Environment). Every page tells search engines its one "official" address (the canonical link), and the sitemap and link previews use full addresses too. Without this setting they use whatever address the visitor arrived on, so once the custom domain is live next to `<service>.onrender.com`, Google would see two copies of the site. Setting it makes the custom domain the one that counts. See [SEO.md](SEO.md) for what to do in Google Search Console afterwards.
+
 ## Settings reference
 
 | Variable | Set in | Notes |
@@ -69,6 +71,7 @@ Render → the service → **Settings → Custom Domains → Add**. Render shows
 | `ASPNETCORE_FORWARDEDHEADERS_ENABLED` | `render.yaml` and Dockerfile | Lets rate limiting see real client IPs behind Render's proxy |
 | `PORT` | `render.yaml` | `10000`, matching the Dockerfile |
 | `VITE_GOOGLE_MAPS_API_KEY` | Render | Read at **build** time. Changing it needs a new deploy |
+| `Site__BaseUrl` | Render | The site's public address, e.g. `https://panchamukhielectriccenter.com.np`. Optional, but set it once you have a custom domain (see step 6). Scheme and host only; anything after the host is ignored |
 
 ## Troubleshooting
 
@@ -79,6 +82,7 @@ Render → the service → **Settings → Custom Domains → Add**. Render shows
 | Deploy fails with `Invalid Jwt settings` | `Jwt__SigningKey` is under 32 bytes. Let Render generate it |
 | Sign-up hangs, then errors | SMTP is blocked (Free plan) or the credentials are wrong. Check the service logs |
 | First request after a while is very slow or errors once | The service or the database was asleep. The app retries database connections automatically |
+| Google shows both `<service>.onrender.com` and the custom domain | `Site__BaseUrl` isn't set, so each address names itself as the official one. Set it to the custom domain |
 | The map says "unavailable" | `VITE_GOOGLE_MAPS_API_KEY` wasn't set when the image was built. Set it and redeploy |
 | Log warning "Failed to determine the https port for redirect" | Harmless. HTTPS ends at Render's proxy, not in the container |
 | Log warning about DataProtection keys | Harmless. The app doesn't use data protection for anything it stores |

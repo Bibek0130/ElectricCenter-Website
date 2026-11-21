@@ -9,8 +9,9 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
  * @property {string} name
  * @property {number} categoryId
  * @property {string} categoryName
- * @property {number} price            List price (NPR) before discount
- * @property {number} discountPercent
+ * @property {number|null} price       List price (NPR) before discount. null when the server withholds it
+ *                                     ("Show price" setting off and the caller isn't an admin)
+ * @property {number} discountPercent  0 whenever the price is withheld
  * @property {number} stock
  * @property {string|null} brand
  * @property {string|null} sku

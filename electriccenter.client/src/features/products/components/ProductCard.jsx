@@ -1,7 +1,8 @@
 import Card from '../../../components/ui/Card.jsx';
 import Badge from '../../../components/ui/Badge.jsx';
 import Button from '../../../components/ui/Button.jsx';
-import { discountedPrice, formatCurrency } from '../../../utils/format.js';
+import { discountedPrice, formatCurrency, isPriceVisible } from '../../../utils/format.js';
+import { useShowPrice } from '../../settings/useSettings.js';
 
 /** Product photo when one is set, otherwise the ⚡ placeholder the catalog has always used. */
 export function ProductImage({ product }) {
@@ -21,8 +22,11 @@ export function ProductImage({ product }) {
  * `admin` is only passed for users with the Admin role; the API enforces the same rule.
  */
 function ProductCard({ product, onView, onAdd, admin }) {
+    // Prices (and discounts, which give them away) show only while the site-wide setting is on
+    // AND this product came back with a price. Admins get prices even when the setting is off.
+    const priceVisible = isPriceVisible(product, useShowPrice());
     const price = discountedPrice(product);
-    const hasDiscount = product.discountPercent > 0;
+    const hasDiscount = priceVisible && product.discountPercent > 0;
     const outOfStock = product.stock === 0;
     const deleted = product.isDeleted;
     const stop = (handler) => (e) => {
@@ -67,10 +71,12 @@ function ProductCard({ product, onView, onAdd, admin }) {
                 <h3 className="product-card-title">{product.name}</h3>
                 <p className="product-card-desc">{product.shortDescription}</p>
 
-                <div className="product-price-row">
-                    <span className="product-price">{formatCurrency(price)}</span>
-                    {hasDiscount && <span className="product-price-original">{formatCurrency(product.price)}</span>}
-                </div>
+                {priceVisible && (
+                    <div className="product-price-row">
+                        <span className="product-price">{formatCurrency(price)}</span>
+                        {hasDiscount && <span className="product-price-original">{formatCurrency(product.price)}</span>}
+                    </div>
+                )}
 
                 {deleted ? (
                     <Button variant="secondary" size="sm" block loading={admin?.busy} disabled={admin?.busy} onClick={stop(admin.onRestore)}>

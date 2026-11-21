@@ -1,3 +1,4 @@
+using ElectricCenter.Server.Articles;
 using ElectricCenter.Server.Data.Entities;
 using ElectricCenter.Server.Electricians;
 using ElectricCenter.Server.Products;
@@ -16,8 +17,14 @@ namespace ElectricCenter.Server.Data
         public DbSet<EmailVerification> EmailVerifications => Set<EmailVerification>();
         public DbSet<Category> Categories => Set<Category>();
 
+        /// <summary>Single-row table of admin-controlled site switches (see <see cref="SiteSettings.SingletonId"/>).</summary>
+        public DbSet<SiteSettings> Settings => Set<SiteSettings>();
+
         /// <summary>Excludes soft-deleted products. Use <c>IgnoreQueryFilters()</c> to include them (admin views).</summary>
         public DbSet<Product> Products => Set<Product>();
+
+        /// <summary>Excludes soft-deleted articles. Drafts are included: filter on <c>IsPublished</c> for public queries.</summary>
+        public DbSet<Article> Articles => Set<Article>();
 
         /// <summary>Excludes soft-deleted electricians. Use <c>IgnoreQueryFilters()</c> to include them (admin views).</summary>
         public DbSet<Electrician> Electricians => Set<Electrician>();
@@ -93,6 +100,15 @@ namespace ElectricCenter.Server.Data
                 category.HasData(SampleCatalog.Categories);
             });
 
+            modelBuilder.Entity<SiteSettings>(settings =>
+            {
+                settings.ToTable("SiteSettings");
+                settings.HasKey(s => s.Id);
+                settings.Property(s => s.Id).ValueGeneratedNever();
+                // The one and only row. Prices are shown until an admin turns them off.
+                settings.HasData(new SiteSettings { Id = SiteSettings.SingletonId, ShowPrice = true });
+            });
+
             modelBuilder.Entity<Product>(product =>
             {
                 product.ToTable("Products");
@@ -119,6 +135,26 @@ namespace ElectricCenter.Server.Data
                 product.HasIndex(p => new { p.IsDeleted, p.CategoryId });
                 product.HasOne(p => p.Category).WithMany(c => c.Products).HasForeignKey(p => p.CategoryId).OnDelete(DeleteBehavior.Restrict);
                 product.HasQueryFilter(p => !p.IsDeleted);
+            });
+
+            modelBuilder.Entity<Article>(article =>
+            {
+                article.ToTable("Articles");
+                article.HasKey(a => a.Id);
+                article.Property(a => a.Title).HasMaxLength(ArticleRules.TitleMaxLength).IsRequired();
+                article.Property(a => a.Slug).HasMaxLength(ArticleRules.SlugMaxLength).IsRequired();
+                article.HasIndex(a => a.Slug).IsUnique();
+                article.Property(a => a.Summary).HasMaxLength(ArticleRules.SummaryMaxLength).IsRequired();
+                // MEDIUMTEXT (16 MB), not TEXT (64 KB): a long article in Nepali is ~3 bytes per character in UTF-8.
+                // Length is enforced in ArticleService.
+                article.Property(a => a.BodyMarkdown).HasColumnType("mediumtext").IsRequired();
+                article.Property(a => a.CoverImageUrl).HasMaxLength(ArticleRules.ImageUrlMaxLength);
+                article.Property(a => a.CoverImageAlt).HasMaxLength(ArticleRules.ImageAltMaxLength);
+                article.Property(a => a.AuthorName).HasMaxLength(ArticleRules.AuthorMaxLength).IsRequired();
+                article.Property(a => a.Version).IsConcurrencyToken();
+                // Serves the public list: published, not deleted, newest first.
+                article.HasIndex(a => new { a.IsDeleted, a.IsPublished, a.PublishedAtUtc });
+                article.HasQueryFilter(a => !a.IsDeleted);
             });
 
             modelBuilder.Entity<Electrician>(electrician =>
