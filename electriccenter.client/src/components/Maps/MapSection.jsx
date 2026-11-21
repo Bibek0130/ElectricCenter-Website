@@ -15,8 +15,8 @@ const STORE_DETAILS = [
 function MapSection() {
     return (
         <Section eyebrow="Find us" title="Visit Our Store" style={{ background: 'var(--color-gray-50)' }}>
-            <div className="grid-responsive" style={{ gridTemplateColumns: '1fr 320px', alignItems: 'start' }}>
-                <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-md)', aspectRatio: '16/7' }}>
+            <div className="store-locator">
+                <div className="store-locator-map">
                     {API_KEY ? (
                         <APIProvider apiKey={API_KEY}>
                             <Map
